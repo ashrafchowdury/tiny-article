@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { cn } from "@/libs/utils";
 
 import { ClerkProvider } from "@clerk/nextjs";
 
@@ -20,7 +19,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={cn("xl:w-[1150px] lg:w-[1025px] md:w-[750px] sm:w-[550px] w-[95%] mx-auto", inter.className)}>
+        <body className={inter.className}>
           {children}
         </body>
       </html>

@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <>
+    <main className="xl:w-[1150px] lg:w-[1025px] md:w-[750px] sm:w-[550px] w-[95%] mx-auto">
       <Navbar />
 
       <header className="flex flex-col items-center">
@@ -12,6 +12,6 @@ export default function Home() {
         </h1>
         <Image src="" alt="" width={920} height={550} className="border rounded-md" />
       </header>
-    </>
+    </main>
   );
 }
