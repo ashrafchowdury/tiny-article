@@ -8,7 +8,7 @@ export default function ServiceLayout({
   return (
     <main className="flex items-start">
       <Sidebar />
-      <section className="w-full mx-12 mt-10">{children}</section>
+      <div className="w-full mx-12 mt-10">{children}</div>
     </main>
   );
 }

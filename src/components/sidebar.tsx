@@ -17,7 +17,7 @@ const Sidebar = () => {
         <p className="text-sm font-medium opacity-70 mt-24 mb-3 mx-6">Dashboard</p>
         <section className="w-full">
           {paths.map((item) => (
-            <Link href={item.url}>
+            <Link href={item.url} key={item.title}>
               <button className="flex items-center py-3 px-6 w-full hover:bg-secondary duration-200 text-[16px] font-medium my-1">
                 <item.icon className="w-5 h-5 mr-2" /> {item.title}
               </button>
