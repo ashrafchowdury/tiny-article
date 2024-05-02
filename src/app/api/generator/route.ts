@@ -1,17 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
-import { generate_posts } from "@/libs/ai";
+import { gemini } from "@/libs/gemini";
 
 export async function POST(req: NextRequest) {
-  const { prompt } = await req.json();
+  const { prompt, type } = await req.json();
 
   try {
     if (!prompt) {
       throw new Error("Invalid request. No propmt found");
     }
 
-    const data = await generate_posts(prompt);
-
-
+    // generate posts
+    const data = await gemini(prompt, type);
+    console.log(data);
     if (!data) {
       throw new Error("Unable to generate posts.");
     }
