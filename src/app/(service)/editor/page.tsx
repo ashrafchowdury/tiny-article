@@ -37,22 +37,17 @@ const Editor = () => {
 
       const data = await res.json();
 
-      const refinedData = JSON.parse(
-        data.data
-          .replace("```json", "")
-          .replace("```", "")
-      );
+      const refinedData = JSON.parse(data.data.replace("```json", "").replace("```", ""));
 
       setPosts(refinedData);
       setArticle("");
       setIsLoading(false);
     } catch (error: any) {
-      console.log(error.message);
       setIsLoading(false);
       toast.error("Encounter error. Please try again later");
     }
   };
-console.log(posts)
+
   return (
     <>
       <h1 className="text-2xl font-bold opacity-65 mb-2">Generate Posts</h1>

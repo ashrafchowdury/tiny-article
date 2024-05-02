@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
 
     // generate posts
     const data = await gemini(prompt, type);
-    console.log(data);
+
     if (!data) {
       throw new Error("Unable to generate posts.");
     }
