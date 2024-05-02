@@ -28,13 +28,7 @@ const Sidebar = () => {
                 <div className="rounded-md flex items-center justify-between  mx-6 cursor-pointer">
                   <div className="w-full flex items-center space-x-2">
                     {user.hasImage ? (
-                      <img
-                        src={user.imageUrl}
-                        alt={user.username as string}
-                        width={40}
-                        height={40}
-                        className="rounded-md"
-                      />
+                      <img src={user.imageUrl} alt={user.username as string} className="w-10 h-10 rounded-md object-cover" />
                     ) : (
                       <div className="w-10 h-10 bg-secondary rounded-md flex items-center justify-center uppercase">
                         {user?.username?.slice(0, 2)}
