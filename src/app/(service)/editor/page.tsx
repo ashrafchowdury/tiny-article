@@ -5,6 +5,7 @@ import { Button } from "@/components/ui";
 import PostCard from "@/components/post-card";
 import PostCardSkeleton from "@/components/skeletons/post-card-skeleton";
 import { POST_TYPE } from "@/utils/types";
+import { useAuth } from "@clerk/nextjs";
 
 import { toast } from "sonner";
 
@@ -13,6 +14,8 @@ const Editor = () => {
   const [article, setArticle] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [posts, setPosts] = useState<POST_TYPE[]>([]);
+
+  const { userId } = useAuth();
 
   const onSubmitUrl = async () => {
     try {
@@ -45,6 +48,26 @@ const Editor = () => {
     } catch (error: any) {
       setIsLoading(false);
       toast.error("Encounter error. Please try again later");
+    }
+  };
+
+  const bookmarkPost = async (data: POST_TYPE) => {
+    try {
+      if (!data.id) return;
+
+      await fetch(`api/${userId}/bookmarks`, {
+        method: "POST",
+        body: JSON.stringify({ ...data }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      toast("Bookmaked the post ✅");
+
+      setPosts(posts.filter((item) => item.id !== data.id));
+    } catch (error) {
+      toast.error("Encounter error while trying to save post");
     }
   };
 
@@ -117,9 +140,9 @@ const Editor = () => {
           <h2 className="text-xl font-bold opacity-65 mb-5">Posts</h2>
 
           <div className="w-full flex flex-wrap items-center space-x-3 justify-between">
-            {posts.map((item, ind) => (
+            {posts.map((item) => (
               <Fragment key={item.id}>
-                <PostCard data={item} />
+                <PostCard data={item} addToBookmark={() => bookmarkPost(item)} />
               </Fragment>
             ))}
           </div>

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/libs/prisma";
 
-export async function GET(req: NextRequest, { params }: { params: { user: number } }) {
+export async function GET(req: NextRequest, { params }: { params: { user: string } }) {
   const userId = params.user;
 
   try {
@@ -18,7 +18,7 @@ export async function GET(req: NextRequest, { params }: { params: { user: number
     }
 
     const bookmarks = await prisma.bookmark.findMany({
-      where: { authorId: userId },
+      where: { authorId: user.id },
     });
 
     return NextResponse.json({ data: bookmarks }, { status: 200 });
@@ -27,8 +27,8 @@ export async function GET(req: NextRequest, { params }: { params: { user: number
   }
 }
 
-export async function POST(req: NextRequest, { params }: { params: { user: number } }) {
-  const { title, content } = await req.json();
+export async function POST(req: NextRequest, { params }: { params: { user: string } }) {
+  const { title, content, id } = await req.json();
   const userId = params.user;
 
   try {
@@ -46,19 +46,20 @@ export async function POST(req: NextRequest, { params }: { params: { user: numbe
 
     const new_bookmark = await prisma.bookmark.create({
       data: {
+        id,
         title,
         content,
-        authorId: userId,
+        authorId: user.id,
       },
     });
 
     return NextResponse.json({ data: new_bookmark }, { status: 201 });
-  } catch (error) {
-    return NextResponse.json({ error: "Failed to bookmark posts" }, { status: 400 });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { user: number } }) {
+export async function DELETE(req: NextRequest, { params }: { params: { user: string } }) {
   const { postId } = await req.json();
   const userId = params.user;
 

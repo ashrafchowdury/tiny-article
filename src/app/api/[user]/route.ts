@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/libs/prisma";
 
-export async function GET(req: NextRequest, { params }: { params: { user: number } }) {
+export async function GET(req: NextRequest, { params }: { params: { user: string } }) {
   const userId = params.user;
 
   try {
@@ -23,8 +23,8 @@ export async function GET(req: NextRequest, { params }: { params: { user: number
   }
 }
 
-export async function POST(req: NextRequest, { params }: { params: { user: number } }) {
-  const { username, email } = await req.json();
+export async function POST(req: NextRequest, { params }: { params: { user: string } }) {
+  const { username, email, avatar } = await req.json();
   const userId = params.user;
 
   try {
@@ -33,7 +33,7 @@ export async function POST(req: NextRequest, { params }: { params: { user: numbe
     }
 
     const user = await prisma.user.findUnique({
-      where: { id: userId },
+      where: { id: userId as string },
     });
 
     if (user) {
@@ -45,11 +45,12 @@ export async function POST(req: NextRequest, { params }: { params: { user: numbe
         id: userId,
         username,
         email,
+        avatar,
       },
     });
 
     return NextResponse.json({ data: new_user }, { status: 201 });
-  } catch (error) {
-    return NextResponse.json({ error: "Failed to bookmark posts" }, { status: 400 });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
   }
 }

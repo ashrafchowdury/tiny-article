@@ -2,12 +2,12 @@ import { SquarePen, Bookmark, SquareLibrary, LifeBuoy, Settings } from "lucide-r
 
 const paths = [
   {
-    url: "/",
+    url: "/editor",
     icon: SquarePen,
     title: "Generate Posts",
   },
   {
-    url: "/",
+    url: "/bookmarks",
     icon: Bookmark,
     title: "Bookmarks",
   },
