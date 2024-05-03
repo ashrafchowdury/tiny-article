@@ -8,19 +8,20 @@ datasource db {
 }
 
 model Bookmark {
-  id           Int      @id @default(autoincrement())
+  id           String   @id @default(cuid())
   title        String
   content      String?
   bookmarkedAt DateTime @default(now())
   author       User?    @relation(fields: [authorId], references: [id])
-  authorId     Int?
+  authorId     String?
 }
 
 model User {
-  id       Int        @id @default(autoincrement())
-  email    String     @unique
-  username String
-  ceatedAt DateTime   @default(now())
-  prompt   String[]
-  posts    Bookmark[]
+  id        String     @id @default(cuid())
+  email     String     @unique
+  username  String
+  avatar    String
+  ceatedAt  DateTime   @default(now())
+  prompt    String[]
+  bookmarks Bookmark[]
 }

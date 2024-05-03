@@ -10,7 +10,17 @@ import {
 } from "@/components/ui";
 import { POST_TYPE } from "@/utils/types";
 
-const PostCard = ({ data }: { data: POST_TYPE }) => {
+const PostCard = ({
+  data,
+  type = "main",
+  addToBookmark,
+  removeFromBookmark,
+}: {
+  data: POST_TYPE;
+  type?: "bookmark" | "main";
+  addToBookmark?: any;
+  removeFromBookmark?: any;
+}) => {
   const [isCopied, setIsCopied] = useState(false);
 
   const onCopyPost = async () => {
@@ -53,7 +63,12 @@ const PostCard = ({ data }: { data: POST_TYPE }) => {
               <DropdownMenuLabel className="!text-xs py-1 opacity-70">About Post</DropdownMenuLabel>
               <DropdownMenuSeparator />
 
-              <DropdownMenuItem>Bookmark Post</DropdownMenuItem>
+              {type === "main" ? (
+                <DropdownMenuItem onClick={addToBookmark}>Bookmark Post</DropdownMenuItem>
+              ) : (
+                <DropdownMenuItem onClick={removeFromBookmark}>Remove Post</DropdownMenuItem>
+              )}
+
               <DropdownMenuItem>Report Bug</DropdownMenuItem>
 
               <DropdownMenuSeparator />

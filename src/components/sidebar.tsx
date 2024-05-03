@@ -28,7 +28,11 @@ const Sidebar = () => {
                 <div className="rounded-md flex items-center justify-between  mx-6 cursor-pointer">
                   <div className="w-full flex items-center space-x-2">
                     {user.hasImage ? (
-                      <img src={user.imageUrl} alt={user.username as string} className="w-10 h-10 rounded-md object-cover" />
+                      <img
+                        src={user.imageUrl}
+                        alt={user.username as string}
+                        className="w-10 h-10 rounded-md object-cover"
+                      />
                     ) : (
                       <div className="w-10 h-10 bg-secondary rounded-md flex items-center justify-center uppercase">
                         {user?.username?.slice(0, 2)}
@@ -53,12 +57,12 @@ const Sidebar = () => {
           )}
         </div>
 
-        <p className="text-sm font-medium opacity-70 mt-24 mb-3 mx-6">Dashboard</p>
+        <p className="text-xs font-medium opacity-70 mt-24 mb-3 mx-6">Dashboard</p>
         <div className="w-full">
           {paths.map((item) => (
             <Link href={item.url} key={item.title}>
-              <button className="flex items-center py-3 px-6 w-full hover:bg-secondary duration-200 text-[16px] font-medium my-1">
-                <item.icon className="w-5 h-5 mr-3" /> {item.title}
+              <button className="flex items-center py-3 px-6 w-full hover:bg-secondary duration-200 text-sm font-medium my-1">
+                <item.icon className="w-4 h-4 mr-3" /> {item.title}
               </button>
             </Link>
           ))}
