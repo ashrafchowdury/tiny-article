@@ -1,5 +1,4 @@
 import { Button } from "./button";
-import { type CarouselApi, Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "./carousel";
 import {
   Dialog,
   DialogPortal,
@@ -33,12 +32,6 @@ import { Skeleton } from "./skeleton";
 
 export {
   Button,
-  type CarouselApi,
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselPrevious,
-  CarouselNext,
   Dialog,
   DialogPortal,
   DialogOverlay,
