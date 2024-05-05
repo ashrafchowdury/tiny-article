@@ -5,6 +5,7 @@ I'm not exactly sure what I'm building yet; I've just started randomly. That's w
 - Typescript - As main language
 - NextJs - As full-stack framework
 - Clerk - For authentication
+- Gemini AI - To generate posts
 - Supabase - Ad main Database
 - Upastash/redis - To cache data
 - Prisma - As ORM
