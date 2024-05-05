@@ -21,3 +21,14 @@ Follow this schema to generate json output. Schema: ${SCHEMA}
 
 // thread propmt
 export const THREAD_PROMPT = ``;
+
+// Posts voice tones
+export const tones = ["netural", "formal", "casual", "profesional", "confident", "engaging", "empathetic", "funny"];
+
+// User utility settings
+export const utility = [
+  { id: "format", title: "Format the posts" },
+  { id: "emoji", title: "Use Emojies" },
+  { id: "hashtag", title: "Use Hashtags" },
+  { id: "save", title: "Auto save posts" },
+];

@@ -22,7 +22,7 @@ const paths = [
     title: "Support",
   },
   {
-    url: "/",
+    url: "/settings",
     icon: Settings,
     title: "Settings",
   },

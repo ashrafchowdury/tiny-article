@@ -7,21 +7,35 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Bookmark {
-  id           String   @id @default(cuid())
-  title        String
-  content      String?
-  bookmarkedAt DateTime @default(now())
-  author       User?    @relation(fields: [authorId], references: [id])
-  authorId     String?
-}
-
 model User {
   id        String     @id @default(cuid())
   email     String     @unique
   username  String
   avatar    String
   ceatedAt  DateTime   @default(now())
-  prompt    String[]
   bookmarks Bookmark[]
+  prompt    Prompt[]
+}
+
+model Bookmark {
+  id           String   @id @default(cuid())
+  title        String
+  content      String?
+  bookmarkedAt DateTime @default(now())
+
+  author   User?   @relation(fields: [authorId], references: [id])
+  authorId String?
+}
+
+model Prompt {
+  id             String  @id @default(cuid())
+  prompt         String?
+  voice          String  @default("netural")
+  isFormatPost   Boolean @default(true)
+  isEmoji        Boolean @default(false)
+  isHashtag      Boolean @default(false)
+  isAutoSavePost Boolean @default(true)
+
+  author   User?   @relation(fields: [authorId], references: [id])
+  authorId String?
 }

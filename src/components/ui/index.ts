@@ -29,6 +29,20 @@ import {
   DropdownMenuRadioGroup,
 } from "./dropdown-menu";
 import { Skeleton } from "./skeleton";
+import {
+  Select,
+  SelectGroup,
+  SelectValue,
+  SelectTrigger,
+  SelectContent,
+  SelectLabel,
+  SelectItem,
+  SelectSeparator,
+  SelectScrollUpButton,
+  SelectScrollDownButton,
+} from "./select";
+import { Checkbox, CheckElement } from "./checkbox";
+import { Switch, SwitchElement } from "./switch";
 
 export {
   Button,
@@ -58,4 +72,18 @@ export {
   DropdownMenuSubTrigger,
   DropdownMenuRadioGroup,
   Skeleton,
+  Select,
+  SelectGroup,
+  SelectValue,
+  SelectTrigger,
+  SelectContent,
+  SelectLabel,
+  SelectItem,
+  SelectSeparator,
+  SelectScrollUpButton,
+  SelectScrollDownButton,
+  Checkbox,
+  CheckElement,
+  Switch,
+  SwitchElement,
 };
