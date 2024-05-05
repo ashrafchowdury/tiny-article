@@ -1,19 +1,99 @@
 "use client";
-import React, { useState } from "react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  CheckElement,
-  SwitchElement,
-  Button,
-} from "@/components/ui";
+import React, { useState, useEffect } from "react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SwitchElement, Button } from "@/components/ui";
+import { tones, utility } from "@/utils/constant";
+import { toast } from "sonner";
+import { useAuth } from "@clerk/nextjs";
 
 const Settings = () => {
   const [customPrompt, setCustomPrompt] = useState("");
   const [selectTone, setSelectTone] = useState("");
+  const [utilities, setUtilities] = useState({
+    format: true,
+    emoji: false,
+    hashtag: false,
+    save: true,
+  });
+
+  const { userId } = useAuth();
+
+  type UtilityKeys = keyof typeof utilities;
+  const onUtilityChange = (title: UtilityKeys) => {
+    setUtilities({ ...utilities, [title]: !utilities[title] });
+  };
+
+  const handleSaveSettings = async () => {
+    try {
+      await fetch(`api/${userId}/custom-prompt`, {
+        method: "POST",
+        body: JSON.stringify({ prompt: customPrompt, voice: selectTone, utilities }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      toast("Updated propmt settings successfully.");
+    } catch (error) {
+      toast.error("Failed to save settings, please try again later");
+    }
+  };
+
+  const handleResetSettings = async () => {
+    try {
+      await fetch(`api/${userId}/custom-prompt`, {
+        method: "POST",
+        body: JSON.stringify({
+          prompt: "",
+          voice: "netural",
+          isFormatPost: true,
+          isEmoji: false,
+          isHashtag: false,
+          isAutoSavePost: true,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      toast("Updated propmt settings successfully.");
+
+      setCustomPrompt("");
+      setSelectTone("netural");
+      setUtilities({
+        format: true,
+        emoji: false,
+        hashtag: false,
+        save: true,
+      });
+    } catch (error) {
+      toast.error("Failed to save settings, please try again later");
+    }
+  };
+
+  const getPromptSettings = async () => {
+    try {
+      const data = await fetch(`api/${userId}/custom-prompt`);
+      const result = await data.json();
+
+      if (result.data) {
+        const { data: res } = result;
+        setCustomPrompt(res.prompt);
+        setSelectTone(res.voice);
+        setUtilities({
+          format: res.isFormatPost,
+          emoji: res.isEmoji,
+          hashtag: res.isHashtag,
+          save: res.isAutoSavePost,
+        });
+      }
+    } catch (error) {
+      toast.error("Failed to load prompt settings");
+    }
+  };
+
+  useEffect(() => {
+    userId ? getPromptSettings() : null;
+  }, []);
 
   return (
     <>
@@ -28,10 +108,12 @@ const Settings = () => {
             </label>
 
             <textarea
-              className="w-full h-[250px] border p-4 rounded-md text-sm"
+              className="w-full h-[200px] border p-4 rounded-md text-sm"
               placeholder="Write custom prompt..."
               maxLength={150}
-            ></textarea>
+              value={customPrompt}
+              onChange={(e) => setCustomPrompt(e.target.value)}
+            />
           </div>
 
           <div className="w-full space-y-5">
@@ -39,43 +121,26 @@ const Settings = () => {
               <label htmlFor="" className="text-sm font-medium opacity-70">
                 Voice Tone
               </label>
-              <Select>
+              <Select onValueChange={(e) => setSelectTone(e)} value={selectTone}>
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select voice tone" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="apple">Apple</SelectItem>
-                  <SelectItem value="banana">Banana</SelectItem>
-                  <SelectItem value="blueberry">Blueberry</SelectItem>
-                  <SelectItem value="grapes">Grapes</SelectItem>
-                  <SelectItem value="pineapple">Pineapple</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="w-full space-y-1.5">
-              <label htmlFor="" className="text-sm font-medium opacity-70">
-                Voice Tone
-              </label>
-              <Select>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select voice tone" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="apple">Apple</SelectItem>
-                  <SelectItem value="banana">Banana</SelectItem>
-                  <SelectItem value="blueberry">Blueberry</SelectItem>
-                  <SelectItem value="grapes">Grapes</SelectItem>
-                  <SelectItem value="pineapple">Pineapple</SelectItem>
+                  {tones.map((item) => (
+                    <SelectItem value={item} key={item} className="capitalize">
+                      {item}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
           </div>
 
           <div className="w-full flex items-center space-x-3 !mt-40">
-            <Button className="w-full opacity-80" variant="destructive">
+            <Button className="w-full opacity-80" variant="destructive" onClick={handleResetSettings}>
               Reset Settings
             </Button>
-            <Button className="w-full">
+            <Button className="w-full" onClick={handleSaveSettings}>
               Update Settings
             </Button>
           </div>
@@ -86,23 +151,15 @@ const Settings = () => {
             <label htmlFor="" className="text-sm font-medium opacity-70">
               Utility options
             </label>
-            <div className="space-y-3">
-              <CheckElement title="Format the posts" id="terms" />
-              <CheckElement title="Use Emojies" id="terms" />
-              <CheckElement title="Use Hashtags" id="terms" />
-              <CheckElement title="Use Hashtags" id="terms" />
-            </div>
-          </div>
-
-          <div className="w-full space-y-2 mt-5">
-            <label htmlFor="" className="text-sm font-medium opacity-70">
-              Utility options
-            </label>
-            <div className="space-y-3">
-              <SwitchElement title="Format the posts" id="terms" />
-              <SwitchElement title="Use Emojies" id="terms" />
-              <SwitchElement title="Use Hashtags" id="terms" />
-              <SwitchElement title="Use Hashtags" id="terms" />
+            <div className="space-y-4">
+              {utility.map((item) => (
+                <SwitchElement
+                  title={item.title}
+                  id={item.id}
+                  checked={utilities[item.id as UtilityKeys]}
+                  onClick={() => onUtilityChange(item.id as UtilityKeys)}
+                />
+              ))}
             </div>
           </div>
         </div>
