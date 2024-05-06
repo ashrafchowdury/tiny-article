@@ -2,98 +2,73 @@
 import React, { useState, useEffect } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SwitchElement, Button } from "@/components/ui";
 import { tones, utility } from "@/utils/constant";
-import { toast } from "sonner";
 import { useAuth } from "@clerk/nextjs";
+import { PROMPT_UTILITIES } from "@/utils/types";
+import { useUpdateCustomPrompt, useFetchCustomPrompt } from "@/libs/queries/useCustomPrompt";
 
 const Settings = () => {
+  const { userId } = useAuth();
+  const updatePrompt = useUpdateCustomPrompt({ userId });
+  const fetcher = useFetchCustomPrompt({ userId });
+
   const [customPrompt, setCustomPrompt] = useState("");
   const [selectTone, setSelectTone] = useState("");
-  const [utilities, setUtilities] = useState({
+  const [utilities, setUtilities] = useState<PROMPT_UTILITIES>({
     format: true,
     emoji: false,
     hashtag: false,
     save: true,
   });
 
-  const { userId } = useAuth();
-
   type UtilityKeys = keyof typeof utilities;
   const onUtilityChange = (title: UtilityKeys) => {
     setUtilities({ ...utilities, [title]: !utilities[title] });
   };
 
-  const handleSaveSettings = async () => {
-    try {
-      await fetch(`api/${userId}/custom-prompt`, {
-        method: "POST",
-        body: JSON.stringify({ prompt: customPrompt, voice: selectTone, utilities }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      toast("Updated propmt settings successfully.");
-    } catch (error) {
-      toast.error("Failed to save settings, please try again later");
-    }
+  const handleUpdatePrompt = () => {
+    const data = {
+      prompt: customPrompt,
+      voice: selectTone,
+      utilities,
+    };
+    updatePrompt.mutate(data);
   };
 
   const handleResetSettings = async () => {
-    try {
-      await fetch(`api/${userId}/custom-prompt`, {
-        method: "POST",
-        body: JSON.stringify({
-          prompt: "",
-          voice: "netural",
-          isFormatPost: true,
-          isEmoji: false,
-          isHashtag: false,
-          isAutoSavePost: true,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      toast("Updated propmt settings successfully.");
-
-      setCustomPrompt("");
-      setSelectTone("netural");
-      setUtilities({
+    const data = {
+      prompt: "",
+      voice: "netural",
+      utilities: {
         format: true,
         emoji: false,
         hashtag: false,
         save: true,
-      });
-    } catch (error) {
-      toast.error("Failed to save settings, please try again later");
-    }
-  };
-
-  const getPromptSettings = async () => {
-    try {
-      const data = await fetch(`api/${userId}/custom-prompt`);
-      const result = await data.json();
-
-      if (result.data) {
-        const { data: res } = result;
-        setCustomPrompt(res.prompt);
-        setSelectTone(res.voice);
-        setUtilities({
-          format: res.isFormatPost,
-          emoji: res.isEmoji,
-          hashtag: res.isHashtag,
-          save: res.isAutoSavePost,
-        });
-      }
-    } catch (error) {
-      toast.error("Failed to load prompt settings");
-    }
+      },
+    };
+    updatePrompt.mutate(data);
   };
 
   useEffect(() => {
-    userId ? getPromptSettings() : null;
-  }, []);
+    if (fetcher.data) {
+      setCustomPrompt(fetcher.data?.prompt);
+      setSelectTone(fetcher.data?.voice);
+      setUtilities({
+        format: fetcher.data?.isFormatPost,
+        emoji: fetcher.data?.isEmoji,
+        hashtag: fetcher.data?.isHashtag,
+        save: fetcher.data?.isAutoSavePost,
+      });
+    }
+  }, [updatePrompt.isSuccess, fetcher.isSuccess]);
+
+  
+  if (fetcher.isError) {
+    return (
+      <div className="w-full h-[90vh] flex items-center justify-center">
+        <p className="text-lg text-center">Failed To Load Prompts. Please Try Again Later</p>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -140,7 +115,7 @@ const Settings = () => {
             <Button className="w-full opacity-80" variant="destructive" onClick={handleResetSettings}>
               Reset Settings
             </Button>
-            <Button className="w-full" onClick={handleSaveSettings}>
+            <Button className="w-full" onClick={handleUpdatePrompt}>
               Update Settings
             </Button>
           </div>

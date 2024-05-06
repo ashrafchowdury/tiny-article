@@ -6,74 +6,42 @@ import PostCard from "@/components/post-card";
 import PostCardSkeleton from "@/components/skeletons/post-card-skeleton";
 import { POST_TYPE } from "@/utils/types";
 import { useAuth } from "@clerk/nextjs";
-
+import { useUpdateBookmark } from "@/libs/queries/useBookmark";
+import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 const Editor = () => {
   const [url, setUrl] = useState("");
   const [article, setArticle] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [posts, setPosts] = useState<POST_TYPE[]>([]);
 
   const { userId } = useAuth();
+  const updateBookmark = useUpdateBookmark({ userId });
 
-  const onSubmitUrl = async () => {
-    try {
-      if (!url) return;
-      setIsLoading(true);
-    } catch (error) {
-      toast.error("Encounter error. Please try again later");
-    }
-  };
-
-  const onSubmitArticle = async () => {
-    try {
-      if (!article) return;
-      setIsLoading(true);
+  // query
+  const { isPending, data, mutate, isError, reset } = useMutation({
+    mutationKey: ["new-posts"],
+    mutationFn: async (prompt: string) => {
       const res = await fetch("/api/generator", {
         method: "POST",
-        body: JSON.stringify({ prompt: article }),
+        body: JSON.stringify({ prompt, type: "post" }),
         headers: {
           "Content-Type": "application/json",
         },
       });
 
       const data = await res.json();
-
       const refinedData = JSON.parse(data.data.replace("```json", "").replace("```", ""));
 
-      setPosts(refinedData);
-      setArticle("");
-      setIsLoading(false);
-    } catch (error: any) {
-      setIsLoading(false);
+      return refinedData;
+    },
+    onError: () => {
       toast.error("Encounter error. Please try again later");
-    }
-  };
-
-  const bookmarkPost = async (data: POST_TYPE) => {
-    try {
-      if (!data.id) return;
-
-      await fetch(`api/${userId}/bookmarks`, {
-        method: "POST",
-        body: JSON.stringify({ ...data }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      toast("Bookmaked the post ✅");
-
-      setPosts(posts.filter((item) => item.id !== data.id));
-    } catch (error) {
-      toast.error("Encounter error while trying to save post");
-    }
-  };
+    },
+  });
 
   return (
     <>
-      <h1 className="text-2xl font-bold opacity-65 mb-2">Generate Posts</h1>
+      <h1 className="text-xl font-bold opacity-65 mb-2">Generate Posts</h1>
       <p className="text-sm w-[50%]">
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur, quae iusto. Molestiae sint asperiores
         numquam magnam aliquam tenetur vel consequuntur!
@@ -95,7 +63,7 @@ const Editor = () => {
           <Button
             size="icon"
             className="w-8 h-8 bg-primary absolute top-[5px] right-[7px]"
-            disabled={isLoading || Boolean(article)}
+            disabled={isPending || Boolean(article) || !Boolean(url)}
           >
             <SendHorizontal className="w-4 h-4" />
           </Button>
@@ -117,7 +85,7 @@ const Editor = () => {
             <Button
               className="py-1 text-sm"
               variant="outline"
-              disabled={isLoading || Boolean(url) || !Boolean(article)}
+              disabled={isPending || Boolean(url) || !Boolean(article)}
               onClick={() => setArticle("")}
             >
               Clear
@@ -125,8 +93,11 @@ const Editor = () => {
             </Button>
             <Button
               className="!py-1 bg-primary text-sm font-semibold"
-              disabled={isLoading || Boolean(url)}
-              onClick={onSubmitArticle}
+              disabled={isPending || Boolean(url) || !Boolean(article)}
+              onClick={() => {
+                reset();
+                mutate(article);
+              }}
             >
               Generate
               <SendHorizontal className="w-3 h-3 ml-2" />
@@ -135,21 +106,27 @@ const Editor = () => {
         </div>
       </section>
 
-      {posts.length > 0 && (
+      {data && (
         <section className="mt-10">
           <h2 className="text-xl font-bold opacity-65 mb-5">Posts</h2>
 
           <div className="w-full flex flex-wrap items-center space-x-3 justify-between">
-            {posts.map((item) => (
+            {data.map((item: POST_TYPE) => (
               <Fragment key={item.id}>
-                <PostCard data={item} addToBookmark={() => bookmarkPost(item)} />
+                <PostCard data={item} addToBookmark={() => updateBookmark.mutate(item)} />
               </Fragment>
             ))}
           </div>
         </section>
       )}
 
-      {isLoading && (
+      {isError && (
+        <section className="w-full mt-20 flex items-center justify-center">
+          <p className="text-lg text-center">Failed To Generate Posts</p>
+        </section>
+      )}
+
+      {isPending && (
         <section className="mt-10">
           <h2 className="text-xl font-bold opacity-65 mb-5">Posts</h2>
           <div className="w-full flex items-center justify-between">

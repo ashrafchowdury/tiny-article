@@ -1,48 +1,15 @@
 "use client";
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment } from "react";
 import PostCard from "@/components/post-card";
 import { POST_TYPE } from "@/utils/types";
-import { toast } from "sonner";
 import { useAuth } from "@clerk/nextjs";
+import PostCardSkeleton from "@/components/skeletons/post-card-skeleton";
+import { useDeleteBookmark, useFetchBookmarks } from "@/libs/queries/useBookmark";
 
 const Bookmarks = () => {
-  const [bookmarks, setBookmarks] = useState<POST_TYPE[]>([]);
   const { userId } = useAuth();
-
-  const getBookmarks = async () => {
-    try {
-      const data = await fetch(`api/${userId}/bookmarks`);
-
-      const result = await data.json();
-      setBookmarks(result.data);
-    } catch (error) {
-      toast.error("Unable to fetch saved bookmarks, Please try again later");
-    }
-  };
-
-  const removePost = async (postId: string) => {
-    try {
-      if (!postId) return;
-
-      await fetch(`api/${userId}/bookmarks`, {
-        method: "DELETE",
-        body: JSON.stringify({ postId: postId }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      toast("Removed post from bookmark ✅");
-
-      setBookmarks(() => bookmarks.filter((item) => item.id !== postId));
-    } catch (error) {
-      toast.error("Encounter error while trying to remove the post");
-    }
-  };
-
-  useEffect(() => {
-    bookmarks.length === 0 && userId ? getBookmarks() : null;
-  }, []);
+  const deletBookmark = useDeleteBookmark({ userId });
+  const bookmark = useFetchBookmarks({ userId });
 
   return (
     <>
@@ -52,11 +19,25 @@ const Bookmarks = () => {
       </p>
 
       <section className="w-full flex flex-wrap items-center justify-start space-x-3 mt-10">
-        {bookmarks?.map((item) => (
+        {bookmark.data?.map((item: POST_TYPE) => (
           <Fragment key={item.id}>
-            <PostCard data={item} type="bookmark" removeFromBookmark={() => removePost(item.id)} />
+            <PostCard data={item} type="bookmark" removeFromBookmark={() => deletBookmark.mutate(item.id)} />
           </Fragment>
         ))}
+
+        {bookmark.isError && (
+          <p className="text-lg text-center">Failed To Load Bookmarks. Please Try Again Later</p>
+        )}
+
+        {bookmark.isLoading && (
+          <>
+            {Array.from({ length: 4 }).map((_, ind) => (
+              <Fragment key={ind}>
+                <PostCardSkeleton />
+              </Fragment>
+            ))}
+          </>
+        )}
       </section>
     </>
   );
