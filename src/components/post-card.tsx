@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Clipboard, EllipsisVertical, Edit, CheckCheck } from "lucide-react";
+import { EllipsisVertical, Edit, Bookmark } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,8 +7,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  Dialog,
+  DialogTrigger,
+  DialogContent,
 } from "@/components/ui";
 import { POST_TYPE } from "@/utils/types";
+import CopyButton from "./micro/copy-button";
 
 const PostCard = ({
   data,
@@ -21,17 +25,11 @@ const PostCard = ({
   addToBookmark?: any;
   removeFromBookmark?: any;
 }) => {
-  const [isCopied, setIsCopied] = useState(false);
-
-  const onCopyPost = async () => {
-    setIsCopied(true);
-
-    navigator.clipboard.writeText(data.content);
-
-    setTimeout(() => {
-      setIsCopied(false);
-    }, 2500);
-  };
+  const [content, setContent] = useState(
+    `${data.title}
+  
+${data.content}` ?? ""
+  );
 
   return (
     <div className="w-[340px] h-[225px] border rounded-md overflow-hidden">
@@ -39,20 +37,44 @@ const PostCard = ({
         <p className="text-sm truncate text-nowrap mr-5">{data.title}</p>
 
         <div className="flex items-center space-x-2">
-          <button
-            className="w-6 h-6 flex items-center justify-center bg-primary text-white rounded-sm"
-            onClick={onCopyPost}
-          >
-            {isCopied ? (
-              <CheckCheck className="w-[14px] h-[14px] text-green-500" />
-            ) : (
-              <Clipboard className="w-[14px] h-[14px]" />
-            )}
-          </button>
-          <button className="w-6 h-6 flex items-center justify-center border rounded-sm">
-            <Edit className="w-[14px] h-[14px]" />
-          </button>
+          <CopyButton content={content} />
 
+          <Dialog>
+            <DialogTrigger>
+              <button className="w-6 h-6 flex items-center justify-center border rounded-sm">
+                <Edit className="w-[14px] h-[14px]" />
+              </button>
+            </DialogTrigger>
+            <DialogContent className="!p-0 overflow-hidden">
+              <section className="w-full h-[300px] relative">
+                <nav className="h-[48px] border flex items-center justify-between px-4">
+                  <p className="text-sm">Editor</p>
+                  <div className="flex items-center space-x-3 mr-7">
+                    <CopyButton content={content} className="text-black bg-transparent border" />
+
+                    {type == "main" && (
+                      <button
+                        className="w-6 h-6 flex items-center justify-center bg-transparent border rounded-sm"
+                        onClick={addToBookmark}
+                      >
+                        <Bookmark className="w-[14px] h-[14px]" />
+                      </button>
+                    )}
+                  </div>
+                </nav>
+                <div>
+                  <textarea
+                    className="w-full h-[252px] border p-4 outline-none"
+                    placeholder="Edit the post"
+                    defaultValue={data.content}
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                  ></textarea>
+                </div>
+                <p className="text-sm absolute bottom-3 left-5 z-50">{content.length}</p>
+              </section>
+            </DialogContent>
+          </Dialog>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="w-6 h-6 flex items-center justify-center border rounded-sm">

@@ -5,10 +5,12 @@ import { POST_TYPE } from "@/utils/types";
 import { useAuth } from "@clerk/nextjs";
 import { useFetchHistory } from "@/libs/queries/useHistory";
 import PostCardSkeleton from "@/components/skeletons/post-card-skeleton";
+import { useUpdateBookmark } from "@/libs/queries/useBookmark";
 
-const Bookmarks = () => {
+const History = () => {
   const { userId } = useAuth();
   const history = useFetchHistory({ userId });
+  const updateBookmark = useUpdateBookmark({ userId });
 
   if (history.isError) {
     return (
@@ -31,13 +33,12 @@ const Bookmarks = () => {
           <div className="w-full flex flex-wrap items-center justify-start space-x-3">
             {value?.map((item: POST_TYPE) => (
               <Fragment key={item.id}>
-                <PostCard data={item} />
+                <PostCard data={item} addToBookmark={() => updateBookmark.mutate(item)} />
               </Fragment>
             ))}
           </div>
         </section>
       ))}
-
 
       {history.isLoading && (
         <section className="mt-10 w-full flex flex-wrap items-center justify-start space-x-3">
@@ -52,4 +53,4 @@ const Bookmarks = () => {
   );
 };
 
-export default Bookmarks;
+export default History;
