@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { queryClient } from "@/libs/query";
-import { POST_TYPE, UserId, PROMPT_UTILITIES } from "@/utils/types";
+import { UserId, PROMPT_UTILITIES } from "@/utils/types";
 import { toast } from "sonner";
 
 // types
@@ -45,7 +45,7 @@ export const useUpdateCustomPrompt = ({ userId }: UserId) => {
       return result.data;
     },
     onSuccess: (data) => {
-      queryClient.setQueryData(KEY, (prevData) => data);
+      queryClient.setQueryData(KEY, (prevData: CustomPrompt) => data);
       toast("✅ Updated propmt settings successfully");
     },
     onError: () => {

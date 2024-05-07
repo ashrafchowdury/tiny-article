@@ -7,6 +7,7 @@ import PostCardSkeleton from "@/components/skeletons/post-card-skeleton";
 import { POST_TYPE } from "@/utils/types";
 import { useAuth } from "@clerk/nextjs";
 import { useUpdateBookmark } from "@/libs/queries/useBookmark";
+import { useSaveHistory } from "@/libs/queries/useHistory";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 
@@ -14,8 +15,10 @@ const Editor = () => {
   const [url, setUrl] = useState("");
   const [article, setArticle] = useState("");
 
+  // chustom hooks
   const { userId } = useAuth();
   const updateBookmark = useUpdateBookmark({ userId });
+  const saveHistory = useSaveHistory({ userId });
 
   // query
   const { isPending, data, mutate, isError, reset } = useMutation({
@@ -33,6 +36,9 @@ const Editor = () => {
       const refinedData = JSON.parse(data.data.replace("```json", "").replace("```", ""));
 
       return refinedData;
+    },
+    onSuccess: (data) => {
+      saveHistory.mutate(data);
     },
     onError: () => {
       toast.error("Encounter error. Please try again later");

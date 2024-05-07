@@ -1,14 +1,22 @@
 "use client";
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment } from "react";
 import PostCard from "@/components/post-card";
 import { POST_TYPE } from "@/utils/types";
-import { toast } from "sonner";
 import { useAuth } from "@clerk/nextjs";
-import { posts } from "@/temp/contants";
+import { useFetchHistory } from "@/libs/queries/useHistory";
+import PostCardSkeleton from "@/components/skeletons/post-card-skeleton";
 
 const Bookmarks = () => {
-  const [history, setHistory] = useState<POST_TYPE[]>([]);
   const { userId } = useAuth();
+  const history = useFetchHistory({ userId });
+
+  if (history.isError) {
+    return (
+      <div className="w-full h-[90vh] flex items-center justify-center">
+        <p className="text-lg text-center">Failed To Load History. Please Try Again Later</p>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -17,25 +25,29 @@ const Bookmarks = () => {
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur, quae iusto.
       </p>
 
-      <section className="mt-10">
-        <p className="text-xs font-medium opacity-70 mb-3">Now</p>
-        <div className="w-full flex flex-wrap items-center justify-start space-x-3">
-          {posts?.map((item) => (
-            <Fragment key={item.id}>
-              <PostCard data={item} />
-            </Fragment>
-          ))}
-        </div>
+      {history.data?.map((value: POST_TYPE[]) => (
+        <section className="mt-10">
+          <p className="text-xs font-medium opacity-70 mb-3">Today</p>
+          <div className="w-full flex flex-wrap items-center justify-start space-x-3">
+            {value?.map((item: POST_TYPE) => (
+              <Fragment key={item.id}>
+                <PostCard data={item} />
+              </Fragment>
+            ))}
+          </div>
+        </section>
+      ))}
 
-        <p className="text-xs font-medium opacity-70 mt-12 mb-3">18 Hours ago</p>
-        <div className="w-full flex flex-wrap items-center justify-start space-x-3">
-          {posts.reverse().map((item) => (
-            <Fragment key={item.id}>
-              <PostCard data={item} />
+
+      {history.isLoading && (
+        <section className="mt-10 w-full flex flex-wrap items-center justify-start space-x-3">
+          {Array.from({ length: 4 }).map((_, ind) => (
+            <Fragment key={ind}>
+              <PostCardSkeleton />
             </Fragment>
           ))}
-        </div>
-      </section>
+        </section>
+      )}
     </>
   );
 };
