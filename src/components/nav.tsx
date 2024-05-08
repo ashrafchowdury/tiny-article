@@ -1,18 +1,19 @@
 import React from 'react'
 import Link from 'next/link'
+import { Button } from './ui';
 const Navbar = () => {
   return (
-    <nav className='w-full h-[80px] flex items-center justify-between'>
-      <p>Logo</p>
+    <nav className="w-full h-[80px] flex items-center justify-between">
+      <p className="text-lg font-semibold">Project-X</p>
 
-      <div className='flex items-center space-x-5 *:text-sm'>
+      <div className="flex items-center space-x-5 *:text-lg">
         <Link href="/">Home</Link>
         <Link href="/">Service</Link>
         <Link href="/">About</Link>
       </div>
 
-      <Link href="/sign-in">
-        <button className='text-sm'>Get Started</button>
+      <Link href="/editor">
+        <Button className="font-medium px-5 py-1.5 rounded-md" variant='secondary'>Get Started</Button>
       </Link>
     </nav>
   );

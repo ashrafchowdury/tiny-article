@@ -3,7 +3,7 @@ import { Skeleton } from "../ui";
 
 const PostCardSkeleton = () => {
   return (
-    <div className="w-[320px] h-[220px] border rounded-md overflow-hidden">
+    <div className="w-[320px] h-[220px] border rounded-md overflow-hidden m-2">
       <div className="w-fyll h-[38px] border-b overflow-hidden px-3 flex items-center justify-between">
         <Skeleton className="w-[70px] h-[20px]" />
 

@@ -61,14 +61,14 @@ const Editor = () => {
           <input
             type="text"
             placeholder="Add article URL here..."
-            className="w-full border py-2 px-3 rounded-md"
+            className="w-full py-2 px-3 rounded-md bg-input outline-none"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
           />
 
           <Button
             size="icon"
-            className="w-8 h-8 bg-primary absolute top-[5px] right-[7px]"
+            className="w-8 h-8 bg-primary absolute top-[4px] right-[5px]"
             disabled={isPending || Boolean(article) || !Boolean(url)}
           >
             <SendHorizontal className="w-4 h-4" />
@@ -81,13 +81,13 @@ const Editor = () => {
 
         <div className="w-full mt-2 relative">
           <textarea
-            className="w-full h-[300px] border pt-3 pb-14 px-3 rounded-md"
+            className="w-full h-[300px] pt-3 pb-14 px-3 rounded-md bg-input outline-none"
             placeholder="Past your article here..."
             onChange={(e) => setArticle(e.target.value)}
             value={article}
           ></textarea>
 
-          <div className="h-[55px] bg-white border-t z-20 absolute bottom-2 left-0.5 right-0.5 flex items-center justify-end px-3 space-x-2">
+          <div className="h-[55px] bg-transparent border-t z-20 absolute bottom-2 left-0.5 right-0.5 flex items-center justify-end px-3 space-x-2">
             <Button
               className="py-1 text-sm"
               variant="outline"
@@ -116,7 +116,7 @@ const Editor = () => {
         <section className="mt-10">
           <h2 className="text-xl font-bold opacity-65 mb-5">Posts</h2>
 
-          <div className="w-full flex flex-wrap items-center space-x-3 justify-between">
+          <div className="w-full flex flex-wrap items-center justify-start">
             {data.map((item: POST_TYPE) => (
               <Fragment key={item.id}>
                 <PostCard data={item} addToBookmark={() => updateBookmark.mutate(item)} />

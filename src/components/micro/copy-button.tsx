@@ -18,7 +18,7 @@ const CopyButton = ({ content, className }: { content: string; className?: strin
 
   return (
     <button
-      className={cn("w-6 h-6 flex items-center justify-center bg-primary text-white rounded-sm", className)}
+      className={cn("w-6 h-6 flex items-center justify-center bg-primary rounded-sm", className)}
       onClick={onCopyPost}
     >
       {isCopied ? (

@@ -18,7 +18,7 @@ const Bookmarks = () => {
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur, quae iusto.
       </p>
 
-      <section className="w-full flex flex-wrap items-center justify-start space-x-3 mt-10">
+      <section className="w-full flex flex-wrap items-center justify-start mt-10">
         {bookmark.data?.map((item: POST_TYPE) => (
           <Fragment key={item.id}>
             <PostCard data={item} type="bookmark" removeFromBookmark={() => deletBookmark.mutate(item.id)} />

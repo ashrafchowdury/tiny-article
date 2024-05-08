@@ -83,7 +83,7 @@ const Settings = () => {
             </label>
 
             <textarea
-              className="w-full h-[200px] border p-4 rounded-md text-sm"
+              className="w-full h-[200px] p-4 rounded-md text-sm bg-input"
               placeholder="Write custom prompt..."
               maxLength={150}
               value={customPrompt}

@@ -30,7 +30,7 @@ const History = () => {
       {history.data?.map((value: POST_TYPE[]) => (
         <section className="mt-10">
           <p className="text-xs font-medium opacity-70 mb-3">Today</p>
-          <div className="w-full flex flex-wrap items-center justify-start space-x-3">
+          <div className="w-full flex flex-wrap items-center justify-start">
             {value?.map((item: POST_TYPE) => (
               <Fragment key={item.id}>
                 <PostCard data={item} addToBookmark={() => updateBookmark.mutate(item)} />

@@ -14,14 +14,14 @@ const Sidebar = () => {
   const { isLoaded, isSignedIn, user } = useUser();
 
   return (
-    <aside className="w-[380px] h-screen border pt-10 pb-5 flex flex-col justify-between">
+    <aside className="w-[380px] h-screen border-r pt-10 pb-5 flex flex-col justify-between">
       <section>
         <div className="space-y-4">
           <div className="mx-6 space-x-2 flex items-center">
             <Image src="" alt="" width={28} height={28} className="border rounded-sm" />{" "}
-            <p className="text-xl font-bold opacity-60">Post Maker</p>
+            <p className="text-xl font-bold opacity-60">Project-X</p>
           </div>
-          <div className="w-[82%] border mx-auto"></div>
+          <div className="w-[83%] border border-border mx-auto"></div>
           {isLoaded && isSignedIn ? (
             <Dialog>
               <DialogTrigger>
@@ -61,7 +61,7 @@ const Sidebar = () => {
         <div className="w-full">
           {paths.map((item) => (
             <Link href={item.url} key={item.title}>
-              <button className="flex items-center py-3 px-6 w-full hover:bg-secondary duration-200 text-sm font-medium my-1">
+              <button className="flex items-center py-3 px-6 w-full hover:bg-input duration-200 text-sm font-medium my-1">
                 <item.icon className="w-4 h-4 mr-3" /> {item.title}
               </button>
             </Link>
@@ -71,7 +71,7 @@ const Sidebar = () => {
 
       {isLoaded ? (
         <SignOutButton>
-          <div className="flex items-center py-3 px-6 w-full hover:bg-secondary duration-200 text-[16px] font-medium cursor-pointer opacity-65 hover:opacity-100">
+          <div className="flex items-center py-3 px-6 w-full hover:bg-input duration-200 text-[16px] font-medium cursor-pointer opacity-65 hover:opacity-100">
             <LogOut className="w-5 h-5 mr-3" /> Sign Out
           </div>
         </SignOutButton>

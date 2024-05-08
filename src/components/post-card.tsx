@@ -13,17 +13,20 @@ import {
 } from "@/components/ui";
 import { POST_TYPE } from "@/utils/types";
 import CopyButton from "./micro/copy-button";
+import { cn } from "@/libs/utils";
 
 const PostCard = ({
   data,
   type = "main",
   addToBookmark,
   removeFromBookmark,
+  className,
 }: {
   data: POST_TYPE;
   type?: "bookmark" | "main";
   addToBookmark?: any;
   removeFromBookmark?: any;
+  className?: string;
 }) => {
   const [content, setContent] = useState(
     `${data.title}
@@ -32,7 +35,7 @@ ${data.content}` ?? ""
   );
 
   return (
-    <div className="w-[340px] h-[225px] border rounded-md overflow-hidden">
+    <div className={cn("w-[340px] h-[225px] border rounded-md overflow-hidden m-2", className)}>
       <div className="w-fyll h-[38px] border-b overflow-hidden px-3 flex items-center justify-between">
         <p className="text-sm truncate text-nowrap mr-5">{data.title}</p>
 
@@ -64,7 +67,7 @@ ${data.content}` ?? ""
                 </nav>
                 <div>
                   <textarea
-                    className="w-full h-[252px] border p-4 outline-none"
+                    className="w-full h-[252px] border p-4 outline-none bg-transparent"
                     placeholder="Edit the post"
                     defaultValue={data.content}
                     value={content}
