@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { gemini } from "@/libs/gemini";
 
 export async function POST(req: NextRequest) {
-  const { prompt, type } = await req.json();
+  const { prompt, userPrompt } = await req.json();
 
   try {
     if (!prompt) {
@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
     }
 
     // generate posts
-    const data = await gemini(prompt, type);
+    const data = await gemini(prompt, userPrompt);
 
     if (!data) {
       throw new Error("Unable to generate posts.");
