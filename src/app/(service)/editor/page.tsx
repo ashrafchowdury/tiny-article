@@ -9,6 +9,7 @@ import { useAuth } from "@clerk/nextjs";
 import { useUpdateBookmark } from "@/libs/queries/useBookmark";
 import { useSaveHistory } from "@/libs/queries/useHistory";
 import { useMutation } from "@tanstack/react-query";
+import { useFetchCustomPrompt } from "@/libs/queries/useCustomPrompt";
 import { toast } from "sonner";
 
 const Editor = () => {
@@ -19,6 +20,7 @@ const Editor = () => {
   const { userId } = useAuth();
   const updateBookmark = useUpdateBookmark({ userId });
   const saveHistory = useSaveHistory({ userId });
+  const userPrompt = useFetchCustomPrompt({ userId });
 
   // query
   const { isPending, data, mutate, isError, reset } = useMutation({
@@ -26,7 +28,7 @@ const Editor = () => {
     mutationFn: async (prompt: string) => {
       const res = await fetch("/api/generator", {
         method: "POST",
-        body: JSON.stringify({ prompt, type: "post" }),
+        body: JSON.stringify({ prompt, userPrompt: userPrompt.data }),
         headers: {
           "Content-Type": "application/json",
         },
@@ -38,7 +40,7 @@ const Editor = () => {
       return refinedData;
     },
     onSuccess: (data) => {
-      saveHistory.mutate(data);
+     userPrompt.data.isAutoSavePost && saveHistory.mutate(data);
     },
     onError: () => {
       toast.error("Encounter error. Please try again later");

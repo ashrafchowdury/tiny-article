@@ -14,13 +14,8 @@ export const SCHEMA = JSON.stringify([
 
 // post prompt
 export const POST_PROPMT = `
-You are a helpful assistant designed to generate 4 posts under 280 charecters each from given article.
-Don't use any king of hashtags, you can use emojis if needed.
-Follow this schema to generate json output. Schema: ${SCHEMA}
+You are a helpful assistant designed to generate 4 posts under 380 charecters each from given article. Follow this schema to generate json output. Schema: ${SCHEMA}
 `;
-
-// thread propmt
-export const THREAD_PROMPT = ``;
 
 // Posts voice tones
 export const tones = ["netural", "formal", "casual", "profesional", "confident", "engaging", "empathetic", "funny"];

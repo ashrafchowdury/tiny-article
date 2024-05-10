@@ -27,7 +27,6 @@
     "lucide-react": "^0.373.0",
     "nanoid": "^5.0.7",
     "next": "14.2.3",
-    "next-themes": "^0.3.0",
     "posthog-js": "^1.129.0",
     "react": "^18",
     "react-dom": "^18",

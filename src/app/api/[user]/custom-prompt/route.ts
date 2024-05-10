@@ -36,27 +36,31 @@ export async function POST(req: NextRequest, { params }: { params: { user: strin
       throw new Error("Unothorized request!");
     }
 
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
+    const findCustomPrompt = await prisma.prompt.findFirst({
+      where: { authorId: userId },
     });
 
-    if (!user) {
-      throw new Error("Invalid user!");
-    }
+    const properties = {
+      prompt,
+      voice,
+      isFormatPost: utilities.format,
+      isEmoji: utilities.emoji,
+      isHashtag: utilities.hashtag,
+      isAutoSavePost: utilities.save,
+    };
 
-    const createCustomPrompt = await prisma.prompt.create({
-      data: {
+    const newCustomPrompt = await prisma.prompt.upsert({
+      where: { id: findCustomPrompt?.id },
+      update: {
+        ...properties,
+      },
+      create: {
         authorId: userId,
-        prompt,
-        voice,
-        isFormatPost: utilities.format,
-        isEmoji: utilities.emoji,
-        isHashtag: utilities.hashtag,
-        isAutoSavePost: utilities.save,
+        ...properties,
       },
     });
 
-    return NextResponse.json({ data: createCustomPrompt }, { status: 201 });
+    return NextResponse.json({ data: newCustomPrompt }, { status: 201 });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }

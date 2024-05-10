@@ -1,5 +1,6 @@
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
-import { POST_PROPMT, THREAD_PROMPT } from "@/utils/constant";
+import { POST_PROPMT } from "@/utils/constant";
+import { Prompt } from "@prisma/client";
 
 // constant variables
 export const MODEL_NAME = "gemini-1.5-pro-latest";
@@ -32,11 +33,18 @@ export const safetySettings = [
   },
 ];
 
-export async function gemini(prompt: string, type: "post" | "thread") {
+export async function gemini(prompt: string, userPrompt: Prompt) {
   const genAI = new GoogleGenerativeAI(API_KEY);
   const model = genAI.getGenerativeModel({ model: MODEL_NAME });
 
-  const parts = [{ text: `input: ${prompt}` }, { text: `output: ${type === "post" ? POST_PROPMT : THREAD_PROMPT}` }];
+  const customUserPrompt = `${userPrompt.prompt}, voice tone have to be ${userPrompt.voice}, ${
+    userPrompt.isEmoji && "add emojies end of a sentence if needed"
+  }, ${userPrompt.isHashtag && "add 2 hashtag which is most relivent to the post"}, ${
+    userPrompt.isFormatPost &&
+    "format the post by adding (enter-space) word at the end of the sentence on the content property only and if emojies are avaiable then add it after the emoji"
+  }`;
+
+  const parts = [{ text: `input: ${prompt}. ${customUserPrompt}` }, { text: `output: ${POST_PROPMT}` }];
 
   const result = await model.generateContent({
     contents: [{ role: "user", parts }],
