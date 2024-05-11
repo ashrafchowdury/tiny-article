@@ -18,7 +18,16 @@ You are a helpful assistant designed to generate 4 posts under 380 charecters ea
 `;
 
 // Posts voice tones
-export const voices = ["netural", "formal", "casual", "profesional", "confident", "engaging", "empathetic", "funny"] as const;
+export const voices = [
+  "netural",
+  "formal",
+  "casual",
+  "profesional",
+  "confident",
+  "engaging",
+  "empathetic",
+  "funny",
+] as const;
 
 // User utility settings
 export const utility = [

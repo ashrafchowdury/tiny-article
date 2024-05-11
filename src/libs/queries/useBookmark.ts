@@ -45,7 +45,10 @@ export const useUpdateBookmark = ({ userId }: UserId) => {
       return data;
     },
     onSuccess: (data) => {
-      queryClient.setQueryData(KEY, (prevData: POST_TYPE[]) => [...prevData, data]);
+      queryClient.setQueryData(KEY, (prevData: POST_TYPE[]) => [
+        ...prevData,
+        data,
+      ]);
       toast("✅ Bookmaked the post");
     },
     onError: () => {
@@ -71,7 +74,9 @@ export const useDeleteBookmark = ({ userId }: UserId) => {
       return postId;
     },
     onSuccess: (data) => {
-      queryClient.setQueryData(KEY, (prevData: POST_TYPE[]) => prevData.filter((item) => item.id !== data));
+      queryClient.setQueryData(KEY, (prevData: POST_TYPE[]) =>
+        prevData.filter((item) => item.id !== data)
+      );
       toast("✅ Removed post from bookmark");
     },
     onError: () => {

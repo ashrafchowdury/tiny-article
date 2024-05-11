@@ -1,4 +1,8 @@
-import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
+import {
+  GoogleGenerativeAI,
+  HarmCategory,
+  HarmBlockThreshold,
+} from "@google/generative-ai";
 import { POST_PROPMT } from "@/utils/constant";
 import { CUSTOM_PROMPT_TYPE } from "@/utils/types";
 
@@ -44,7 +48,10 @@ export async function gemini(prompt: string, userPrompt: CUSTOM_PROMPT_TYPE) {
     "format the post by adding (enter-space) word at the end of the sentence on the content property only and if emojies are avaiable then add it after the emoji"
   }`;
 
-  const parts = [{ text: `input: ${prompt}. ${customUserPrompt}` }, { text: `output: ${POST_PROPMT}` }];
+  const parts = [
+    { text: `input: ${prompt}. ${customUserPrompt}` },
+    { text: `output: ${POST_PROPMT}` },
+  ];
 
   const result = await model.generateContent({
     contents: [{ role: "user", parts }],

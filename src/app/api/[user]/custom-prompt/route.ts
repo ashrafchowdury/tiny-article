@@ -2,7 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/libs/prisma";
 import { CustomPromptSchema } from "@/libs/validations";
 
-export async function GET(req: NextRequest, { params }: { params: { user: string } }) {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { user: string } }
+) {
   const userId = params.user;
 
   try {
@@ -24,11 +27,17 @@ export async function GET(req: NextRequest, { params }: { params: { user: string
 
     return NextResponse.json({ data: prompt }, { status: 200 });
   } catch (error: any) {
-    return NextResponse.json({ error: "Failed to load custom prompt" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Failed to load custom prompt" },
+      { status: 400 }
+    );
   }
 }
 
-export async function POST(req: NextRequest, { params }: { params: { user: string } }) {
+export async function POST(
+  req: NextRequest,
+  { params }: { params: { user: string } }
+) {
   const data = await req.json();
   const validateData = CustomPromptSchema.safeParse(data);
   const userId = params.user;
@@ -46,7 +55,6 @@ export async function POST(req: NextRequest, { params }: { params: { user: strin
       where: { authorId: userId },
     });
 
- 
     const newCustomPrompt = await prisma.prompt.upsert({
       where: { id: findCustomPrompt?.id },
       update: {

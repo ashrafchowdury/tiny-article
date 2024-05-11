@@ -2,7 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/libs/prisma";
 import { PostSchema } from "@/libs/validations";
 
-export async function GET(req: NextRequest, { params }: { params: { user: string } }) {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { user: string } }
+) {
   const userId = params.user;
 
   try {
@@ -24,11 +27,17 @@ export async function GET(req: NextRequest, { params }: { params: { user: string
 
     return NextResponse.json({ data: bookmarks }, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ error: "Failed to load bookmarks" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Failed to load bookmarks" },
+      { status: 400 }
+    );
   }
 }
 
-export async function POST(req: NextRequest, { params }: { params: { user: string } }) {
+export async function POST(
+  req: NextRequest,
+  { params }: { params: { user: string } }
+) {
   const data = await req.json();
   const validateData = PostSchema.safeParse(data);
   const userId = params.user;
@@ -65,7 +74,10 @@ export async function POST(req: NextRequest, { params }: { params: { user: strin
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { user: string } }) {
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { user: string } }
+) {
   const { postId } = await req.json();
   const userId = params.user;
 
@@ -88,6 +100,9 @@ export async function DELETE(req: NextRequest, { params }: { params: { user: str
 
     return NextResponse.json({ data: delete_bookmark }, { status: 203 });
   } catch (error) {
-    return NextResponse.json({ error: "Failed to delete bookmark" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Failed to delete bookmark" },
+      { status: 400 }
+    );
   }
 }

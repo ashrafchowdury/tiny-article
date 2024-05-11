@@ -3,7 +3,10 @@ import { cachePosts, getPostBatches } from "./cache-algorithm";
 import prisma from "@/libs/prisma";
 import { PostsSchema } from "@/libs/validations";
 
-export async function GET(req: NextRequest, { params }: { params: { user: string } }) {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { user: string } }
+) {
   const userId = params.user;
 
   try {
@@ -23,11 +26,17 @@ export async function GET(req: NextRequest, { params }: { params: { user: string
 
     return NextResponse.json({ data: posts }, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ error: "Failed to load history" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Failed to load history" },
+      { status: 400 }
+    );
   }
 }
 
-export async function POST(req: NextRequest, { params }: { params: { user: string } }) {
+export async function POST(
+  req: NextRequest,
+  { params }: { params: { user: string } }
+) {
   const { posts } = await req.json();
   const validateData = PostsSchema.safeParse(posts);
   const userId = params.user;
@@ -53,6 +62,9 @@ export async function POST(req: NextRequest, { params }: { params: { user: strin
 
     return NextResponse.json({ data: newHistory }, { status: 201 });
   } catch (error) {
-    return NextResponse.json({ error: "Failed to save posts" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Failed to save posts" },
+      { status: 400 }
+    );
   }
 }

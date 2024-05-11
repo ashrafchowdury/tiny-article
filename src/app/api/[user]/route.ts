@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/libs/prisma";
 
-export async function GET(req: NextRequest, { params }: { params: { user: string } }) {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { user: string } }
+) {
   const userId = params.user;
 
   try {
@@ -19,11 +22,17 @@ export async function GET(req: NextRequest, { params }: { params: { user: string
 
     return NextResponse.json({ data: user }, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ error: "Failed to load bookmarks" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Failed to load bookmarks" },
+      { status: 400 }
+    );
   }
 }
 
-export async function POST(req: NextRequest, { params }: { params: { user: string } }) {
+export async function POST(
+  req: NextRequest,
+  { params }: { params: { user: string } }
+) {
   const { username, email, avatar } = await req.json();
   const userId = params.user;
 

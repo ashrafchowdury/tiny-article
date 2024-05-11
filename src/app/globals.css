@@ -1,47 +1,46 @@
 @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
+@tailwind components;
+@tailwind utilities;
 
-  @layer base {
-    :root {
-      --background: 35 100% 88%;
-      --foreground: 224 51.4% 4.1%; /* text color black */
+@layer base {
+  :root {
+    --background: 35 100% 88%;
+    --foreground: 224 51.4% 4.1%; /* text color black */
 
-      --card: 35 100% 88%;
-      --card-foreground: 224 51.4% 4.1%; /* text color black */
+    --card: 35 100% 88%;
+    --card-foreground: 224 51.4% 4.1%; /* text color black */
 
-      --popover: 35 100% 88%;
-      --popover-foreground: 224 51.4% 4.1%; /* text color black */
+    --popover: 35 100% 88%;
+    --popover-foreground: 224 51.4% 4.1%; /* text color black */
 
-      --primary: 35 100% 66%;
-      --primary-foreground: 210 20% 98%;
+    --primary: 35 100% 66%;
+    --primary-foreground: 210 20% 98%;
 
-      --secondary: 35 47% 62%;
-      --secondary-foreground: 35 47% 95%;
+    --secondary: 35 47% 62%;
+    --secondary-foreground: 35 47% 95%;
 
-      --muted: 35 47% 62%;
-      --muted-foreground: 35 100% 82%;
+    --muted: 35 47% 62%;
+    --muted-foreground: 35 100% 82%;
 
-      --accent: 35 47% 62%;
-      --accent-foreground: 0 0% 30%;
+    --accent: 35 47% 62%;
+    --accent-foreground: 0 0% 30%;
 
-      --destructive: 0 84.2% 60.2%;
-      --destructive-foreground: 210 20% 98%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 20% 98%;
 
-      --border: 35 100% 78%;
-      --input: 35 100% 82%;
-      --ring: 35 100% 75%; /* text color black */
+    --border: 35 100% 78%;
+    --input: 35 100% 82%;
+    --ring: 35 100% 75%; /* text color black */
 
-      --radius: 0.5rem;
-    }
-
+    --radius: 0.5rem;
   }
+}
 
-  @layer base {
-    * {
-      @apply border-border;
-    }
-    body {
-      @apply bg-background text-foreground;
-    }
+@layer base {
+  * {
+    @apply border-border;
   }
+  body {
+    @apply bg-background text-foreground;
+  }
+}

@@ -1,6 +1,6 @@
-import React from 'react'
-import Link from 'next/link'
-import { Button } from './ui';
+import React from "react";
+import Link from "next/link";
+import { Button } from "./ui";
 const Navbar = () => {
   return (
     <nav className="w-full h-[80px] flex items-center justify-between">
@@ -13,10 +13,12 @@ const Navbar = () => {
       </div>
 
       <Link href="/editor">
-        <Button className="font-medium px-5 py-1.5 rounded-md">Get Started</Button>
+        <Button className="font-medium px-5 py-1.5 rounded-md">
+          Get Started
+        </Button>
       </Link>
     </nav>
   );
-}
+};
 
-export default Navbar
+export default Navbar;

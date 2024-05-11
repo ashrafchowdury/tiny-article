@@ -1,10 +1,21 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SwitchElement, Button } from "@/components/ui";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  SwitchElement,
+  Button,
+} from "@/components/ui";
 import { voices, utility } from "@/utils/constant";
 import { useAuth } from "@clerk/nextjs";
 import { VOICE_TYPE } from "@/utils/types";
-import { useUpdateCustomPrompt, useFetchCustomPrompt } from "@/libs/queries/useCustomPrompt";
+import {
+  useUpdateCustomPrompt,
+  useFetchCustomPrompt,
+} from "@/libs/queries/useCustomPrompt";
 
 const Settings = () => {
   const { userId } = useAuth();
@@ -61,7 +72,9 @@ const Settings = () => {
   if (fetcher.isError) {
     return (
       <div className="w-full h-[90vh] flex items-center justify-center">
-        <p className="text-lg text-center">Failed To Load Prompts. Please Try Again Later</p>
+        <p className="text-lg text-center">
+          Failed To Load Prompts. Please Try Again Later
+        </p>
       </div>
     );
   }
@@ -69,7 +82,10 @@ const Settings = () => {
   return (
     <>
       <h1 className="text-xl font-bold opacity-65 mb-2">Settings</h1>
-      <p className="text-sm">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur, quae iusto.</p>
+      <p className="text-sm">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur,
+        quae iusto.
+      </p>
 
       <section className="w-full flex items-start justify-between space-x-6 mt-10">
         <div className="w-full space-y-4">
@@ -92,7 +108,10 @@ const Settings = () => {
               <label htmlFor="" className="text-sm font-medium opacity-70">
                 Voice Tone
               </label>
-              <Select onValueChange={(e: VOICE_TYPE) => setSelectTone(e)} value={selectTone}>
+              <Select
+                onValueChange={(e: VOICE_TYPE) => setSelectTone(e)}
+                value={selectTone}
+              >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select voice tone" />
                 </SelectTrigger>
@@ -108,7 +127,11 @@ const Settings = () => {
           </div>
 
           <div className="w-full flex items-center space-x-3 !mt-40">
-            <Button className="w-full opacity-80" variant="destructive" onClick={handleResetSettings}>
+            <Button
+              className="w-full opacity-80"
+              variant="destructive"
+              onClick={handleResetSettings}
+            >
               Reset Settings
             </Button>
             <Button className="w-full" onClick={handleUpdatePrompt}>

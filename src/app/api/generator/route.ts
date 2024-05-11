@@ -25,6 +25,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ data }, { status: 201 });
   } catch (error: any) {
     console.log("error message", error.message);
-    return NextResponse.json({ message: "Encounter error while triyng to generate posts" }, { status: 400 });
+    return NextResponse.json(
+      { message: "Encounter error while triyng to generate posts" },
+      { status: 400 }
+    );
   }
 }

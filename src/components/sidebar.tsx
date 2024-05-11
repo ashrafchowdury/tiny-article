@@ -18,7 +18,13 @@ const Sidebar = () => {
       <section>
         <div className="space-y-4">
           <div className="mx-6 space-x-2 flex items-center">
-            <Image src="" alt="" width={28} height={28} className="border rounded-sm" />{" "}
+            <Image
+              src=""
+              alt=""
+              width={28}
+              height={28}
+              className="border rounded-sm"
+            />{" "}
             <p className="text-xl font-bold opacity-60">Project-X</p>
           </div>
           <div className="w-[83%] border border-border mx-auto"></div>
@@ -40,8 +46,12 @@ const Sidebar = () => {
                     )}
 
                     <div>
-                      <p className="text-sm font-semibold text-start">{user?.username}</p>
-                      <p className="w-[80%] text-sm opacity-75 truncate">{user?.emailAddresses[0].emailAddress}</p>
+                      <p className="text-sm font-semibold text-start">
+                        {user?.username}
+                      </p>
+                      <p className="w-[80%] text-sm opacity-75 truncate">
+                        {user?.emailAddresses[0].emailAddress}
+                      </p>
                     </div>
                   </div>
 
@@ -57,7 +67,9 @@ const Sidebar = () => {
           )}
         </div>
 
-        <p className="text-xs font-medium opacity-70 mt-24 mb-3 mx-6">Dashboard</p>
+        <p className="text-xs font-medium opacity-70 mt-24 mb-3 mx-6">
+          Dashboard
+        </p>
         <div className="w-full">
           {paths.map((item) => (
             <Link href={item.url} key={item.title}>
@@ -77,7 +89,8 @@ const Sidebar = () => {
         </SignOutButton>
       ) : (
         <div className="flex items-center px-6">
-          <Skeleton className="w-6 h-6 mr-2" /> <Skeleton className="w-24 h-5 rounded-sm" />
+          <Skeleton className="w-6 h-6 mr-2" />{" "}
+          <Skeleton className="w-24 h-5 rounded-sm" />
         </div>
       )}
     </aside>

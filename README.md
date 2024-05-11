@@ -1,7 +1,9 @@
 # Project-x
+
 I'm not exactly sure what I'm building yet; I've just started randomly. That's why it's currently named Project-X.
 
 ## Tech Stack
+
 - Typescript - As main language
 - NextJs - As full-stack framework
 - Clerk - For authentication

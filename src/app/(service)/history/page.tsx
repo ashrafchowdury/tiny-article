@@ -15,7 +15,9 @@ const History = () => {
   if (history.isError) {
     return (
       <div className="w-full h-[90vh] flex items-center justify-center">
-        <p className="text-lg text-center">Failed To Load History. Please Try Again Later</p>
+        <p className="text-lg text-center">
+          Failed To Load History. Please Try Again Later
+        </p>
       </div>
     );
   }
@@ -24,7 +26,8 @@ const History = () => {
     <>
       <h1 className="text-xl font-bold opacity-65 mb-2">History</h1>
       <p className="text-sm w-[50%]">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur, quae iusto.
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur,
+        quae iusto.
       </p>
 
       {history.data?.map((value: POST_TYPE[]) => (
@@ -33,7 +36,10 @@ const History = () => {
           <div className="w-full flex flex-wrap items-center justify-start">
             {value?.map((item: POST_TYPE) => (
               <Fragment key={item.id}>
-                <PostCard data={item} addToBookmark={() => updateBookmark.mutate(item)} />
+                <PostCard
+                  data={item}
+                  addToBookmark={() => updateBookmark.mutate(item)}
+                />
               </Fragment>
             ))}
           </div>

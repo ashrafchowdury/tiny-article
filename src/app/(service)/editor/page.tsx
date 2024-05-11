@@ -36,7 +36,9 @@ const Editor = () => {
       });
 
       const data = await res.json();
-      const refinedData = JSON.parse(data.data.replace("```json", "").replace("```", ""));
+      const refinedData = JSON.parse(
+        data.data.replace("```json", "").replace("```", "")
+      );
 
       const validateData = PostsSchema.safeParse(refinedData);
 
@@ -58,8 +60,9 @@ const Editor = () => {
     <>
       <h1 className="text-xl font-bold opacity-65 mb-2">Generate Posts</h1>
       <p className="text-sm w-[50%]">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur, quae iusto. Molestiae sint asperiores
-        numquam magnam aliquam tenetur vel consequuntur!
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur,
+        quae iusto. Molestiae sint asperiores numquam magnam aliquam tenetur vel
+        consequuntur!
       </p>
 
       <section className="mt-10">
@@ -128,7 +131,10 @@ const Editor = () => {
           <div className="w-full flex flex-wrap items-center justify-start">
             {data.map((item: POST_TYPE) => (
               <Fragment key={item.id}>
-                <PostCard data={item} addToBookmark={() => updateBookmark.mutate(item)} />
+                <PostCard
+                  data={item}
+                  addToBookmark={() => updateBookmark.mutate(item)}
+                />
               </Fragment>
             ))}
           </div>

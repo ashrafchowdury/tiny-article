@@ -5,7 +5,10 @@ import { POST_TYPE } from "@/utils/types";
 const DATA_EXPIRE = 86400; // 24 hours in seconds
 
 // Create new posts batch
-export const createNewPostsBatch = async (userId: string, data: POST_TYPE[]) => {
+export const createNewPostsBatch = async (
+  userId: string,
+  data: POST_TYPE[]
+) => {
   const CURRENT_TIME = Math.floor(Date.now() / 1000); // Get current time in seconds
   const KEY = `user:${userId}:${CURRENT_TIME}`; // Generate unique key for data batch
 
@@ -23,7 +26,11 @@ export const createNewPostsBatch = async (userId: string, data: POST_TYPE[]) => 
 };
 
 // Update post batch by adding new posts
-export const updatePostsBatch = async (batchKey: string, data: POST_TYPE[], userId: string) => {
+export const updatePostsBatch = async (
+  batchKey: string,
+  data: POST_TYPE[],
+  userId: string
+) => {
   try {
     await cache.json.arrinsert(batchKey, "$", 0, ...data);
     await cache.expire(`user:${userId}:batches`, DATA_EXPIRE);
@@ -48,7 +55,10 @@ export const isRecentBatch = async (userId: string) => {
 
     // Check each batch key's creation time
     for (const batchKey of batches) {
-      const batchCreationTime = (await cache.hget(`user:${userId}:batches`, batchKey)) as number;
+      const batchCreationTime = (await cache.hget(
+        `user:${userId}:batches`,
+        batchKey
+      )) as number;
 
       if (CURRENT_TIME - batchCreationTime < HOURS) {
         return batchKey; // User has a recent batch

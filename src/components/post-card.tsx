@@ -35,7 +35,12 @@ ${data.content}` ?? ""
   );
 
   return (
-    <div className={cn("w-[340px] h-[225px] border rounded-md overflow-hidden m-2", className)}>
+    <div
+      className={cn(
+        "w-[340px] h-[225px] border rounded-md overflow-hidden m-2",
+        className
+      )}
+    >
       <div className="w-fyll h-[38px] border-b overflow-hidden px-3 flex items-center justify-between">
         <p className="text-sm truncate text-nowrap mr-5">{data.title}</p>
 
@@ -53,7 +58,10 @@ ${data.content}` ?? ""
                 <nav className="h-[48px] border flex items-center justify-between px-4">
                   <p className="text-sm">Editor</p>
                   <div className="flex items-center space-x-3 mr-7">
-                    <CopyButton content={content} className="text-black bg-transparent border" />
+                    <CopyButton
+                      content={content}
+                      className="text-black bg-transparent border"
+                    />
 
                     {type == "main" && (
                       <button
@@ -74,7 +82,9 @@ ${data.content}` ?? ""
                     onChange={(e) => setContent(e.target.value)}
                   ></textarea>
                 </div>
-                <p className="text-sm absolute bottom-3 left-5 z-50">{content.length}</p>
+                <p className="text-sm absolute bottom-3 left-5 z-50">
+                  {content.length}
+                </p>
               </section>
             </DialogContent>
           </Dialog>
@@ -85,13 +95,19 @@ ${data.content}` ?? ""
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-44" align="end">
-              <DropdownMenuLabel className="!text-xs py-1 opacity-70">About Post</DropdownMenuLabel>
+              <DropdownMenuLabel className="!text-xs py-1 opacity-70">
+                About Post
+              </DropdownMenuLabel>
               <DropdownMenuSeparator />
 
               {type === "main" ? (
-                <DropdownMenuItem onClick={addToBookmark}>Bookmark Post</DropdownMenuItem>
+                <DropdownMenuItem onClick={addToBookmark}>
+                  Bookmark Post
+                </DropdownMenuItem>
               ) : (
-                <DropdownMenuItem onClick={removeFromBookmark}>Remove Post</DropdownMenuItem>
+                <DropdownMenuItem onClick={removeFromBookmark}>
+                  Remove Post
+                </DropdownMenuItem>
               )}
 
               <DropdownMenuItem>Report Bug</DropdownMenuItem>

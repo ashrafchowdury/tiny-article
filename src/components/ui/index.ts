@@ -41,7 +41,6 @@ import {
   SelectScrollUpButton,
   SelectScrollDownButton,
 } from "./select";
-import { Checkbox, CheckElement } from "./checkbox";
 import { Switch, SwitchElement } from "./switch";
 
 export {
@@ -82,8 +81,6 @@ export {
   SelectSeparator,
   SelectScrollUpButton,
   SelectScrollDownButton,
-  Checkbox,
-  CheckElement,
   Switch,
   SwitchElement,
 };

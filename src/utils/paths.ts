@@ -1,4 +1,11 @@
-import { SquarePen, Bookmark, SquareLibrary, LifeBuoy, Settings, History } from "lucide-react";
+import {
+  SquarePen,
+  Bookmark,
+  SquareLibrary,
+  LifeBuoy,
+  Settings,
+  History,
+} from "lucide-react";
 
 const paths = [
   {
