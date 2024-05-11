@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/libs/prisma";
+import { PostSchema } from "@/libs/validations";
 
 export async function GET(req: NextRequest, { params }: { params: { user: string } }) {
   const userId = params.user;
@@ -28,10 +29,15 @@ export async function GET(req: NextRequest, { params }: { params: { user: string
 }
 
 export async function POST(req: NextRequest, { params }: { params: { user: string } }) {
-  const { title, content, id } = await req.json();
+  const data = await req.json();
+  const validateData = PostSchema.safeParse(data);
   const userId = params.user;
 
   try {
+    if (!validateData.success) {
+      throw new Error("Invalid credentials");
+    }
+
     if (!userId) {
       throw new Error("Unothorized request!");
     }
@@ -46,9 +52,9 @@ export async function POST(req: NextRequest, { params }: { params: { user: strin
 
     const new_bookmark = await prisma.bookmark.create({
       data: {
-        id,
-        title,
-        content,
+        id: validateData.data.id,
+        title: validateData.data.title,
+        content: validateData.data.content,
         authorId: user.id,
       },
     });

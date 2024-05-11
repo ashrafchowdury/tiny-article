@@ -18,12 +18,12 @@ You are a helpful assistant designed to generate 4 posts under 380 charecters ea
 `;
 
 // Posts voice tones
-export const tones = ["netural", "formal", "casual", "profesional", "confident", "engaging", "empathetic", "funny"];
+export const voices = ["netural", "formal", "casual", "profesional", "confident", "engaging", "empathetic", "funny"] as const;
 
 // User utility settings
 export const utility = [
-  { id: "format", title: "Format the posts" },
-  { id: "emoji", title: "Use Emojies" },
-  { id: "hashtag", title: "Use Hashtags" },
-  { id: "save", title: "Auto save posts" },
+  { key: "isFormatPost", title: "Format the posts" },
+  { key: "isEmoji", title: "Use Emojies" },
+  { key: "isHashtag", title: "Use Hashtags" },
+  { key: "isAutoSavePost", title: "Auto save posts" },
 ];

@@ -1,14 +1,8 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { queryClient } from "@/libs/query";
-import { UserId, PROMPT_UTILITIES } from "@/utils/types";
+import { UserId, CUSTOM_PROMPT_TYPE } from "@/utils/types";
 import { toast } from "sonner";
-
-// types
-type CustomPrompt = {
-  prompt: string;
-  voice: string;
-  utilities: PROMPT_UTILITIES;
-};
+import { CustomPromptSchema } from "@/libs/validations";
 
 // constants
 const KEY = ["custom-prompt"];
@@ -20,7 +14,15 @@ export const useFetchCustomPrompt = ({ userId }: UserId) => {
     queryFn: async () => {
       const data = await fetch(`api/${userId}/custom-prompt`);
       const result = await data.json();
-      return result.data;
+
+      const validateData = CustomPromptSchema.safeParse(result.data);
+
+      if (!validateData.success) {
+        console.log(validateData.error.message);
+        return;
+      }
+
+      return validateData.data;
     },
     refetchOnWindowFocus: false,
     retry: RETRY,
@@ -33,10 +35,10 @@ export const useFetchCustomPrompt = ({ userId }: UserId) => {
 export const useUpdateCustomPrompt = ({ userId }: UserId) => {
   const updatetor = useMutation({
     mutationKey: KEY,
-    mutationFn: async (data: CustomPrompt) => {
+    mutationFn: async (data: CUSTOM_PROMPT_TYPE) => {
       const res = await fetch(`api/${userId}/custom-prompt`, {
         method: "POST",
-        body: JSON.stringify({ prompt: data.prompt, voice: data.voice, utilities: data.utilities }),
+        body: JSON.stringify({ ...data }),
         headers: {
           "Content-Type": "application/json",
         },
@@ -45,7 +47,7 @@ export const useUpdateCustomPrompt = ({ userId }: UserId) => {
       return result.data;
     },
     onSuccess: (data) => {
-      queryClient.setQueryData(KEY, (prevData: CustomPrompt) => data);
+      queryClient.setQueryData(KEY, (prevData: CUSTOM_PROMPT_TYPE) => data);
       toast("✅ Updated propmt settings successfully");
     },
     onError: () => {

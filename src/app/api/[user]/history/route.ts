@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cachePosts, getPostBatches } from "./cache-algorithm";
 import prisma from "@/libs/prisma";
+import { PostsSchema } from "@/libs/validations";
 
 export async function GET(req: NextRequest, { params }: { params: { user: string } }) {
   const userId = params.user;
@@ -28,8 +29,14 @@ export async function GET(req: NextRequest, { params }: { params: { user: string
 
 export async function POST(req: NextRequest, { params }: { params: { user: string } }) {
   const { posts } = await req.json();
+  const validateData = PostsSchema.safeParse(posts);
   const userId = params.user;
+
   try {
+    if (!validateData.success) {
+      throw new Error(validateData.error.message);
+    }
+
     if (!userId) {
       throw new Error("Unothorized request!");
     }
@@ -42,7 +49,7 @@ export async function POST(req: NextRequest, { params }: { params: { user: strin
       throw new Error("Invalid user id");
     }
 
-   const newHistory = await cachePosts(userId, posts);
+    const newHistory = await cachePosts(userId, validateData.data);
 
     return NextResponse.json({ data: newHistory }, { status: 201 });
   } catch (error) {

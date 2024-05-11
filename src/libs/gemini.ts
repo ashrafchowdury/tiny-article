@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
 import { POST_PROPMT } from "@/utils/constant";
-import { Prompt } from "@prisma/client";
+import { CUSTOM_PROMPT_TYPE } from "@/utils/types";
 
 // constant variables
 export const MODEL_NAME = "gemini-1.5-pro-latest";
@@ -33,7 +33,7 @@ export const safetySettings = [
   },
 ];
 
-export async function gemini(prompt: string, userPrompt: Prompt) {
+export async function gemini(prompt: string, userPrompt: CUSTOM_PROMPT_TYPE) {
   const genAI = new GoogleGenerativeAI(API_KEY);
   const model = genAI.getGenerativeModel({ model: MODEL_NAME });
 
