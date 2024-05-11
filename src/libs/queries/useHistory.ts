@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { queryClient } from "@/libs/query";
 import { UserId, POST_TYPE } from "@/utils/types";
+import { HistorySchema } from "@/libs/validations";
 
 // constants
 const KEY = ["history"];
@@ -12,7 +12,14 @@ export const useFetchHistory = ({ userId }: UserId) => {
     queryFn: async () => {
       const data = await fetch(`api/${userId}/history`);
       const result = await data.json();
-      return result.data;
+
+      const validateData = HistorySchema.safeParse(result.data);
+
+      if (!validateData.success) {
+        throw new Error(validateData.error.message);
+      }
+
+      return validateData.data;
     },
     refetchOnWindowFocus: false,
     retry: RETRY,

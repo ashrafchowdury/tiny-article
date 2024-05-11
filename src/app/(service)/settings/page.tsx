@@ -1,9 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SwitchElement, Button } from "@/components/ui";
-import { tones, utility } from "@/utils/constant";
+import { voices, utility } from "@/utils/constant";
 import { useAuth } from "@clerk/nextjs";
-import { PROMPT_UTILITIES } from "@/utils/types";
+import { VOICE_TYPE } from "@/utils/types";
 import { useUpdateCustomPrompt, useFetchCustomPrompt } from "@/libs/queries/useCustomPrompt";
 
 const Settings = () => {
@@ -12,12 +12,12 @@ const Settings = () => {
   const fetcher = useFetchCustomPrompt({ userId });
 
   const [customPrompt, setCustomPrompt] = useState("");
-  const [selectTone, setSelectTone] = useState("");
-  const [utilities, setUtilities] = useState<PROMPT_UTILITIES>({
-    format: true,
-    emoji: false,
-    hashtag: false,
-    save: true,
+  const [selectTone, setSelectTone] = useState<VOICE_TYPE>("netural");
+  const [utilities, setUtilities] = useState({
+    isFormatPost: true,
+    isEmoji: false,
+    isHashtag: false,
+    isAutoSavePost: true,
   });
 
   type UtilityKeys = keyof typeof utilities;
@@ -29,39 +29,35 @@ const Settings = () => {
     const data = {
       prompt: customPrompt,
       voice: selectTone,
-      utilities,
+      ...utilities,
     };
     updatePrompt.mutate(data);
   };
 
   const handleResetSettings = async () => {
     const data = {
-      prompt: "",
-      voice: "netural",
-      utilities: {
-        format: true,
-        emoji: false,
-        hashtag: false,
-        save: true,
-      },
+      voice: "netural" as VOICE_TYPE,
+      isFormatPost: true,
+      isEmoji: false,
+      isHashtag: false,
+      isAutoSavePost: true,
     };
     updatePrompt.mutate(data);
   };
 
   useEffect(() => {
     if (fetcher.data) {
-      setCustomPrompt(fetcher.data?.prompt);
+      setCustomPrompt(fetcher.data?.prompt as string);
       setSelectTone(fetcher.data?.voice);
       setUtilities({
-        format: fetcher.data?.isFormatPost,
-        emoji: fetcher.data?.isEmoji,
-        hashtag: fetcher.data?.isHashtag,
-        save: fetcher.data?.isAutoSavePost,
+        isFormatPost: fetcher.data?.isFormatPost,
+        isEmoji: fetcher.data?.isEmoji,
+        isHashtag: fetcher.data?.isHashtag,
+        isAutoSavePost: fetcher.data?.isAutoSavePost,
       });
     }
   }, [updatePrompt.isSuccess, fetcher.isSuccess]);
 
-  
   if (fetcher.isError) {
     return (
       <div className="w-full h-[90vh] flex items-center justify-center">
@@ -96,12 +92,12 @@ const Settings = () => {
               <label htmlFor="" className="text-sm font-medium opacity-70">
                 Voice Tone
               </label>
-              <Select onValueChange={(e) => setSelectTone(e)} value={selectTone}>
+              <Select onValueChange={(e: VOICE_TYPE) => setSelectTone(e)} value={selectTone}>
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select voice tone" />
                 </SelectTrigger>
                 <SelectContent>
-                  {tones.map((item) => (
+                  {voices.map((item) => (
                     <SelectItem value={item} key={item} className="capitalize">
                       {item}
                     </SelectItem>
@@ -130,9 +126,9 @@ const Settings = () => {
               {utility.map((item) => (
                 <SwitchElement
                   title={item.title}
-                  id={item.id}
-                  checked={utilities[item.id as UtilityKeys]}
-                  onClick={() => onUtilityChange(item.id as UtilityKeys)}
+                  id={item.key}
+                  checked={utilities[item.key as UtilityKeys]}
+                  onClick={() => onUtilityChange(item.key as UtilityKeys)}
                 />
               ))}
             </div>

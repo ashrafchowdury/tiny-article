@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { queryClient } from "@/libs/query";
 import { POST_TYPE, UserId } from "@/utils/types";
 import { toast } from "sonner";
+import { PostsSchema } from "../validations";
 
 // constants
 const KEY = ["bookmarks"];
@@ -13,7 +14,14 @@ export const useFetchBookmarks = ({ userId }: UserId) => {
     queryFn: async () => {
       const data = await fetch(`api/${userId}/bookmarks`);
       const result = await data.json();
-      return result.data;
+
+      const validateData = PostsSchema.safeParse(result.data);
+
+      if (!validateData.success) {
+        throw new Error(validateData.error.message);
+      }
+
+      return validateData.data;
     },
     refetchOnWindowFocus: false,
     retry: RETRY,
