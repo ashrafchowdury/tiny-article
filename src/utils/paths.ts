@@ -7,42 +7,41 @@ import {
   History,
 } from "lucide-react";
 
-const paths = [
-  {
-    url: "/editor",
-    icon: SquarePen,
-    title: "Create Posts",
-  },
-  {
-    url: "/history",
-    icon: History,
-    title: "History",
-  },
-  {
-    url: "/bookmarks",
-    icon: Bookmark,
-    title: "Bookmarks",
-  },
-  {
-    url: "/",
-    icon: SquareLibrary,
-    title: "Resources",
-  },
-  {
-    url: "/",
-    icon: LifeBuoy,
-    title: "Support",
-  },
-  {
-    url: "/settings",
-    icon: Settings,
-    title: "Settings",
-  },
-  // {
-  //   url: "/",
-  //   icon: ,
-  //   title: "",
-  // },
-];
+const paths = {
+  service: [
+    {
+      url: "/editor",
+      icon: SquarePen,
+      title: "Create Posts",
+    },
+    {
+      url: "/history",
+      icon: History,
+      title: "History",
+    },
+    {
+      url: "/bookmarks",
+      icon: Bookmark,
+      title: "Bookmarks",
+    },
+    {
+      url: "/settings",
+      icon: Settings,
+      title: "Settings",
+    },
+  ],
+  resource: [
+    {
+      url: "/",
+      icon: SquareLibrary,
+      title: "Resources",
+    },
+    {
+      url: "/",
+      icon: LifeBuoy,
+      title: "Support",
+    },
+  ],
+};
 
 export default paths;

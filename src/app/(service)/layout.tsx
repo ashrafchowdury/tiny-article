@@ -11,9 +11,9 @@ export default function ServiceLayout({
 }>) {
   return (
     <QueryClientProvider client={queryClient}>
-      <main className="flex items-start">
+      <main className="flex items-start overflow-hidden">
         <Sidebar />
-        <div className="w-full mx-12 mt-10">{children}</div>
+        <div className="w-full px-12 pt-10 h-screen overflow-y-scroll">{children}</div>
       </main>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>

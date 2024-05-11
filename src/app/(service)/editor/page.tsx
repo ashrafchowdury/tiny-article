@@ -66,14 +66,14 @@ const Editor = () => {
       </p>
 
       <section className="mt-10">
-        <label htmlFor="" className="text-sm font-medium opacity-70">
+        <label htmlFor="url" className="text-sm font-medium opacity-70">
           Article URL
         </label>
         <div className="w-full mt-2 mb-5 relative">
           <input
             type="text"
             placeholder="Add article URL here..."
-            className="w-full py-2 px-3 rounded-md bg-input outline-none"
+            className="w-full py-2.5 px-4 rounded-md bg-input outline-none text-sm"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
           />
@@ -87,46 +87,50 @@ const Editor = () => {
           </Button>
         </div>
 
-        <label htmlFor="" className="text-sm font-medium opacity-70">
+        <label htmlFor="article" className="text-sm font-medium opacity-70">
           Past Article Here
         </label>
 
         <div className="w-full mt-2 relative">
           <textarea
-            className="w-full h-[300px] pt-3 pb-14 px-3 rounded-md bg-input outline-none"
+            className="w-full h-[300px] pt-4 pb-14 px-4 rounded-md bg-input outline-none text-sm"
             placeholder="Past your article here..."
             onChange={(e) => setArticle(e.target.value)}
             value={article}
           ></textarea>
 
-          <div className="h-[55px] bg-transparent border-t z-20 absolute bottom-2 left-0.5 right-0.5 flex items-center justify-end px-3 space-x-2">
-            <Button
-              className="py-1 text-sm"
-              variant="outline"
-              disabled={isPending || Boolean(url) || !Boolean(article)}
-              onClick={() => setArticle("")}
-            >
-              Clear
-              <Eraser className="w-3 h-3 ml-2" />
-            </Button>
-            <Button
-              className="!py-1 bg-primary text-sm font-semibold"
-              disabled={isPending || Boolean(url) || !Boolean(article)}
-              onClick={() => {
-                reset();
-                mutate(article);
-              }}
-            >
-              Generate
-              <SendHorizontal className="w-3 h-3 ml-2" />
-            </Button>
+          <div className="h-[55px] bg-input border-t z-20 absolute bottom-1.5 left-0.5 right-0.5 flex items-center justify-between px-3">
+            <p className="text-sm opacity-80">Length: {article.length}</p>
+
+            <div className="flex items-center space-x-2">
+              <Button
+                className="py-1 text-sm"
+                variant="outline"
+                disabled={isPending || Boolean(url) || !Boolean(article)}
+                onClick={() => setArticle("")}
+              >
+                Clear
+                <Eraser className="w-3 h-3 ml-2" />
+              </Button>
+              <Button
+                className="!py-1 bg-primary text-sm font-semibold"
+                disabled={isPending || Boolean(url) || !Boolean(article)}
+                onClick={() => {
+                  reset();
+                  mutate(article);
+                }}
+              >
+                Generate
+                <SendHorizontal className="w-3 h-3 ml-2" />
+              </Button>
+            </div>
           </div>
         </div>
       </section>
 
       {data && (
         <section className="mt-10">
-          <h2 className="text-xl font-bold opacity-65 mb-5">Posts</h2>
+          <h2 className="text-xl font-bold opacity-65 mb-4">Posts</h2>
 
           <div className="w-full flex flex-wrap items-center justify-start">
             {data.map((item: POST_TYPE) => (
@@ -134,6 +138,7 @@ const Editor = () => {
                 <PostCard
                   data={item}
                   addToBookmark={() => updateBookmark.mutate(item)}
+                  className="mx-1"
                 />
               </Fragment>
             ))}
