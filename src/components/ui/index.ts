@@ -42,6 +42,18 @@ import {
   SelectScrollDownButton,
 } from "./select";
 import { Switch, SwitchElement } from "./switch";
+import {
+  Sheet,
+  SheetPortal,
+  SheetOverlay,
+  SheetTrigger,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetFooter,
+  SheetTitle,
+  SheetDescription,
+} from "./sheet";
 
 export {
   Button,
@@ -83,4 +95,14 @@ export {
   SelectScrollDownButton,
   Switch,
   SwitchElement,
+  Sheet,
+  SheetPortal,
+  SheetOverlay,
+  SheetTrigger,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetFooter,
+  SheetTitle,
+  SheetDescription,
 };

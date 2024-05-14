@@ -41,16 +41,16 @@ export async function gemini(prompt: string, userPrompt: CUSTOM_PROMPT_TYPE) {
   const genAI = new GoogleGenerativeAI(API_KEY);
   const model = genAI.getGenerativeModel({ model: MODEL_NAME });
 
-  const customUserPrompt = `${userPrompt.prompt}, voice tone have to be ${userPrompt.voice}, ${
-    userPrompt.isEmoji && "add emojies end of a sentence if needed"
-  }, ${userPrompt.isHashtag && "add 2 hashtag which is most relivent to the post"}, ${
+  const customUserPrompt = `${userPrompt.prompt}. Voice tone has to be ${userPrompt.voice}, ${
+    userPrompt.isEmoji && "add emojis end of a sentence if needed"
+  }, ${userPrompt.isHashtag && "add 2 hashtags which is most relevant to the post"}, ${
     userPrompt.isFormatPost &&
-    "format the post by adding (enter-space) word at the end of the sentence on the content property only and if emojies are avaiable then add it after the emoji"
+    "and format the post by adding (enter-space) word at the end of the sentence, add that only on the content property."
   }`;
 
   const parts = [
-    { text: `input: ${prompt}. ${customUserPrompt}` },
-    { text: `output: ${POST_PROPMT}` },
+    { text: `input: ${prompt}` },
+    { text: `output: ${POST_PROPMT}. ${customUserPrompt}` },
   ];
 
   const result = await model.generateContent({

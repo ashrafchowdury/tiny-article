@@ -82,12 +82,12 @@ const Settings = () => {
   return (
     <>
       <h1 className="text-xl font-bold opacity-65 mb-2">Settings</h1>
-      <p className="text-sm">
+      <p className="text-sm w-full md:w-[70%] lg:w-[50%]">
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur,
         quae iusto.
       </p>
 
-      <section className="w-full flex items-start justify-between space-x-6 mt-10">
+      <section className="w-full flex flex-col-reverse md:flex-row items-start justify-between md:space-x-6 mt-10">
         <div className="w-full space-y-4">
           <div className="w-full space-y-1.5">
             <label htmlFor="" className="text-sm font-medium opacity-70">
@@ -126,7 +126,7 @@ const Settings = () => {
             </div>
           </div>
 
-          <div className="w-full flex items-center space-x-3 !mt-40">
+          <div className="w-full flex items-center space-x-3 !mt-10 sm:!mt-20 md:!mt-40 !mb-10">
             <Button
               className="w-full opacity-80"
               variant="destructive"
@@ -140,7 +140,7 @@ const Settings = () => {
           </div>
         </div>
 
-        <div className="w-[450px]">
+        <div className="w-full md:w-[450px] mb-6 md:mb-0">
           <div className="w-full space-y-2">
             <label htmlFor="" className="text-sm font-medium opacity-70">
               Utility options

@@ -37,7 +37,7 @@ ${data.content}` ?? ""
   return (
     <div
       className={cn(
-        "w-[340px] h-[225px] border rounded-md overflow-hidden m-2",
+        "md:w-[280px] lg:w-[300px] xl:w-[340px] md:h-[190px] lg:h-[200px] xl:h-[225px] border rounded-md overflow-hidden my-1 md:m-1 lg:m-1.5 xl:m-2",
         className
       )}
     >

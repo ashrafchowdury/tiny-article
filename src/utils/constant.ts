@@ -14,7 +14,7 @@ export const SCHEMA = JSON.stringify([
 
 // post prompt
 export const POST_PROPMT = `
-You are a helpful assistant designed to generate 4 posts under 380 charecters each from given article. Follow this schema to generate json output. Schema: ${SCHEMA}
+You are a helpful assistant designed to generate 4 posts under 380 characters each from a given article. Follow this schema to generate JSON output. Schema: ${SCHEMA}
 `;
 
 // Posts voice tones

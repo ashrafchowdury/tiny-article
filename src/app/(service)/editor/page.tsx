@@ -59,10 +59,9 @@ const Editor = () => {
   return (
     <>
       <h1 className="text-xl font-bold opacity-65 mb-2">Generate Posts</h1>
-      <p className="text-sm w-[50%]">
+      <p className="text-sm w-full md:w-[70%] lg:w-[50%]">
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur,
-        quae iusto. Molestiae sint asperiores numquam magnam aliquam tenetur vel
-        consequuntur!
+        quae iusto.
       </p>
 
       <section className="mt-10">
@@ -93,27 +92,29 @@ const Editor = () => {
 
         <div className="w-full mt-2 relative">
           <textarea
-            className="w-full h-[300px] pt-4 pb-14 px-4 rounded-md bg-input outline-none text-sm"
+            className="w-full h-[220px] sm:h-[250px] lg:h-[300px] pt-4 pb-14 px-4 rounded-md bg-input outline-none text-sm"
             placeholder="Past your article here..."
             onChange={(e) => setArticle(e.target.value)}
             value={article}
           ></textarea>
 
-          <div className="h-[55px] bg-input border-t z-20 absolute bottom-1.5 left-0.5 right-0.5 flex items-center justify-between px-3">
-            <p className="text-sm opacity-80">Length: {article.length}</p>
+          <div className="h-[50px] lg:h-[55px] bg-input border-t z-20 absolute bottom-1.5 left-0.5 right-0.5 flex items-center justify-between px-3">
+            <p className="text-xs md:text-sm opacity-80">
+              Length: {article.length}
+            </p>
 
             <div className="flex items-center space-x-2">
               <Button
-                className="py-1 text-sm"
+                className="text-xs lg:text-sm"
                 variant="outline"
                 disabled={isPending || Boolean(url) || !Boolean(article)}
                 onClick={() => setArticle("")}
               >
                 Clear
-                <Eraser className="w-3 h-3 ml-2" />
+                <Eraser className="w-3 h-3 ml-2 hidden sm:block" />
               </Button>
               <Button
-                className="!py-1 bg-primary text-sm font-semibold"
+                className="text-xs lg:text-sm font-semibold"
                 disabled={isPending || Boolean(url) || !Boolean(article)}
                 onClick={() => {
                   reset();
@@ -121,7 +122,7 @@ const Editor = () => {
                 }}
               >
                 Generate
-                <SendHorizontal className="w-3 h-3 ml-2" />
+                <SendHorizontal className="w-3 h-3 ml-2 hidden sm:block" />
               </Button>
             </div>
           </div>
@@ -129,7 +130,7 @@ const Editor = () => {
       </section>
 
       {data && (
-        <section className="mt-10">
+        <section className="w-full mt-10">
           <h2 className="text-xl font-bold opacity-65 mb-4">Posts</h2>
 
           <div className="w-full flex flex-wrap items-center justify-start">

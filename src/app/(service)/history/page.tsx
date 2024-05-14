@@ -25,7 +25,7 @@ const History = () => {
   return (
     <>
       <h1 className="text-xl font-bold opacity-65 mb-2">History</h1>
-      <p className="text-sm w-[50%]">
+      <p className="text-sm w-full md:w-[70%] lg:w-[50%]">
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur,
         quae iusto.
       </p>
