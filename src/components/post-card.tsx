@@ -31,7 +31,8 @@ const PostCard = ({
   const [content, setContent] = useState(
     `${data.title}
 
-${data.content.flatMap((item) => `${item.replaceAll('**', '').replaceAll("*", "-")}\n \n`)}` ?? ""
+${data.content.flatMap((item) => `${item.replaceAll("**", "").replaceAll("*", "-")}\n \n`)}` ??
+      ""
   );
 
   return (

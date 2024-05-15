@@ -1,3 +1,4 @@
+import { Alert, AlertTitle, AlertDescription } from "./alert";
 import { Button } from "./button";
 import {
   Dialog,
@@ -105,4 +106,7 @@ export {
   SheetFooter,
   SheetTitle,
   SheetDescription,
+  Alert,
+  AlertTitle,
+  AlertDescription,
 };

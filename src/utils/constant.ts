@@ -45,3 +45,5 @@ export const utility = [
   { key: "isHashtag", title: "Use Hashtags" },
   { key: "isAutoSavePost", title: "Auto save posts" },
 ];
+
+export const MAX_USAGE_LIMIT = 5;
