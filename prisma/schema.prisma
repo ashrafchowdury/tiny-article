@@ -20,7 +20,8 @@ model User {
 model Bookmark {
   id        String   @id @default(cuid())
   title     String
-  content   String
+  content   String[]
+  hashtags  String[]
   createdAt DateTime @default(now())
 
   author   User?   @relation(fields: [authorId], references: [id])

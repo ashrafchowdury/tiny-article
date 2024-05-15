@@ -10,8 +10,10 @@ import { useUpdateBookmark } from "@/libs/queries/useBookmark";
 import { useSaveHistory } from "@/libs/queries/useHistory";
 import { useMutation } from "@tanstack/react-query";
 import { useFetchCustomPrompt } from "@/libs/queries/useCustomPrompt";
+import { useTotalUsage } from "@/libs/queries/useLimit";
 import { toast } from "sonner";
 import { PostsSchema } from "@/libs/validations";
+import { queryClient } from "@/libs/query";
 
 const Editor = () => {
   const [url, setUrl] = useState("");
@@ -22,6 +24,7 @@ const Editor = () => {
   const updateBookmark = useUpdateBookmark({ userId });
   const saveHistory = useSaveHistory({ userId });
   const userPrompt = useFetchCustomPrompt({ userId });
+  const limit = useTotalUsage({ userId });
 
   // query
   const { isPending, data, mutate, isError, reset } = useMutation({
@@ -29,7 +32,7 @@ const Editor = () => {
     mutationFn: async (prompt: string) => {
       const res = await fetch("/api/generator", {
         method: "POST",
-        body: JSON.stringify({ prompt, userPrompt: userPrompt.data }),
+        body: JSON.stringify({ prompt, userPrompt: userPrompt.data, userId }),
         headers: {
           "Content-Type": "application/json",
         },
@@ -50,6 +53,7 @@ const Editor = () => {
     },
     onSuccess: (data) => {
       userPrompt.data?.isAutoSavePost && saveHistory.mutate(data);
+      queryClient.setQueryData(["total-usage"], () => limit.data?.usage + 1);
     },
     onError: () => {
       toast.error("Encounter error. Please try again later");
@@ -75,12 +79,13 @@ const Editor = () => {
             className="w-full py-2.5 px-4 rounded-md bg-input outline-none text-sm"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
+            disabled={true}
           />
 
           <Button
             size="icon"
             className="w-8 h-8 bg-primary absolute top-[4px] right-[5px]"
-            disabled={isPending || Boolean(article) || !Boolean(url)}
+            disabled={isPending || Boolean(article) || !Boolean(url) || true}
           >
             <SendHorizontal className="w-4 h-4" />
           </Button>
@@ -96,6 +101,7 @@ const Editor = () => {
             placeholder="Past your article here..."
             onChange={(e) => setArticle(e.target.value)}
             value={article}
+            disabled={limit.data?.reached}
           ></textarea>
 
           <div className="h-[50px] lg:h-[55px] bg-input border-t z-20 absolute bottom-1.5 left-0.5 right-0.5 flex items-center justify-between px-3">
@@ -117,11 +123,12 @@ const Editor = () => {
                 className="text-xs lg:text-sm font-semibold"
                 disabled={isPending || Boolean(url) || !Boolean(article)}
                 onClick={() => {
+                  if (limit.data?.reached) return;
                   reset();
                   mutate(article);
                 }}
               >
-                Generate
+                {isPending ? "Generating" : "Generate"}
                 <SendHorizontal className="w-3 h-3 ml-2 hidden sm:block" />
               </Button>
             </div>
@@ -150,6 +157,14 @@ const Editor = () => {
       {isError && (
         <section className="w-full mt-20 flex items-center justify-center">
           <p className="text-lg text-center">Failed To Generate Posts</p>
+        </section>
+      )}
+
+      {limit.data?.reached && (
+        <section className="w-full mt-20 flex items-center justify-center">
+          <p className="text-lg text-center">
+            You have reached your daily limit
+          </p>
         </section>
       )}
 

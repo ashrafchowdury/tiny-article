@@ -44,7 +44,7 @@ export async function POST(
 
   try {
     if (!validateData.success) {
-      throw new Error("Invalid credentials");
+      throw new Error(validateData?.error.message);
     }
 
     if (!userId) {
@@ -66,6 +66,7 @@ export async function POST(
         content: validateData.data.content,
         authorId: user.id,
       },
+      select: { authorId: false, id: true, title: true, content: true },
     });
 
     return NextResponse.json({ data: new_bookmark }, { status: 201 });

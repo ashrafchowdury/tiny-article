@@ -8,19 +8,26 @@ import {
   SelectValue,
   SwitchElement,
   Button,
+  Alert,
+  AlertTitle,
+  AlertDescription,
 } from "@/components/ui";
-import { voices, utility } from "@/utils/constant";
+import { voices, utility, MAX_USAGE_LIMIT } from "@/utils/constant";
 import { useAuth } from "@clerk/nextjs";
 import { VOICE_TYPE } from "@/utils/types";
 import {
   useUpdateCustomPrompt,
   useFetchCustomPrompt,
 } from "@/libs/queries/useCustomPrompt";
+import { cn } from "@/libs/utils";
+import { useTotalUsage } from "@/libs/queries/useLimit";
+import { TriangleAlert } from "lucide-react";
 
 const Settings = () => {
   const { userId } = useAuth();
   const updatePrompt = useUpdateCustomPrompt({ userId });
   const fetcher = useFetchCustomPrompt({ userId });
+  const limit = useTotalUsage({ userId });
 
   const [customPrompt, setCustomPrompt] = useState("");
   const [selectTone, setSelectTone] = useState<VOICE_TYPE>("netural");
@@ -87,8 +94,19 @@ const Settings = () => {
         quae iusto.
       </p>
 
+      {limit.data?.reached && (
+        <Alert className="mt-10" variant="destructive">
+          <TriangleAlert className="h-4 w-4" />
+          <AlertTitle>Reached Limit</AlertTitle>
+          <AlertDescription>
+            You have reached your daily limit. Wait 24 hours to reuse again.
+          </AlertDescription>
+        </Alert>
+      )}
+
       <section className="w-full flex flex-col-reverse md:flex-row items-start justify-between md:space-x-6 mt-10">
         <div className="w-full space-y-4">
+          {/* text prompt */}
           <div className="w-full space-y-1.5">
             <label htmlFor="" className="text-sm font-medium opacity-70">
               Add Custom Prompt
@@ -103,6 +121,7 @@ const Settings = () => {
             />
           </div>
 
+          {/* voice tone */}
           <div className="w-full space-y-5">
             <div className="w-full space-y-1.5">
               <label htmlFor="" className="text-sm font-medium opacity-70">
@@ -126,6 +145,42 @@ const Settings = () => {
             </div>
           </div>
 
+          {/* usage limit */}
+          <div className="w-full !mt-8 space-y-1.5">
+            <label htmlFor="" className="text-sm font-medium opacity-70">
+              Usage Limit
+            </label>
+
+            <div className="w-full h-2.5 rounded-sm bg-input overflow-hidden">
+              <div
+                className="w-full h-2.5 bg-primary  rounded-sm flex items-center justify-end"
+                style={{
+                  transform: `translateX(-${100 - (limit.data?.usage * 20 || 0)}%)`,
+                }}
+              >
+                <div className="w-4 h-3 rounded-sm bg-black/70 -mr-0.5"></div>
+              </div>
+            </div>
+
+            <div className="w-full flex items-center justify-between opacity-70">
+              {Array.from(
+                { length: MAX_USAGE_LIMIT + 1 },
+                (_, index) => index
+              ).map((item) => (
+                <span
+                  key={item}
+                  className={cn(
+                    "text-xs",
+                    item == limit.data?.usage && "font-bold text-sm"
+                  )}
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* buttons */}
           <div className="w-full flex items-center space-x-3 !mt-10 sm:!mt-20 md:!mt-40 !mb-10">
             <Button
               className="w-full opacity-80"
@@ -140,6 +195,7 @@ const Settings = () => {
           </div>
         </div>
 
+        {/* utility options */}
         <div className="w-full md:w-[450px] mb-6 md:mb-0">
           <div className="w-full space-y-2">
             <label htmlFor="" className="text-sm font-medium opacity-70">
