@@ -26,8 +26,8 @@ const History = () => {
     <>
       <h1 className="text-xl font-bold opacity-65 mb-2">History</h1>
       <p className="text-sm w-full md:w-[70%] lg:w-[50%]">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur,
-        quae iusto.
+        All generated posts are automatically saved here for 24 hours. You can
+        disable this feature from the settings page.
       </p>
 
       {history.data?.map((value: POST_TYPE[]) => (

@@ -18,8 +18,7 @@ const Bookmarks = () => {
     <>
       <h1 className="text-2xl font-bold opacity-65 mb-2">Bookmark Posts</h1>
       <p className="text-sm w-full md:w-[70%] lg:w-[50%]">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur,
-        quae iusto.
+        All of your bookmarks are stored here for ease of access.
       </p>
 
       <section className="w-full flex flex-wrap items-center justify-start mt-10">

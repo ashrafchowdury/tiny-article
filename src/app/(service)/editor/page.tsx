@@ -64,8 +64,8 @@ const Editor = () => {
     <>
       <h1 className="text-xl font-bold opacity-65 mb-2">Generate Posts</h1>
       <p className="text-sm w-full md:w-[70%] lg:w-[50%]">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur,
-        quae iusto.
+        To generate posts ready for social media, use the link to the article or
+        copy the entire article and paste it here.
       </p>
 
       <section className="mt-10">
