@@ -121,7 +121,7 @@ const Editor = () => {
                   mutate(article);
                 }}
               >
-                Generate
+                {isPending ? "Generating" : "Generate"}
                 <SendHorizontal className="w-3 h-3 ml-2 hidden sm:block" />
               </Button>
             </div>

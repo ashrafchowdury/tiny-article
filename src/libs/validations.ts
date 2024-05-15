@@ -4,7 +4,7 @@ import { voices } from "@/utils/constant";
 export const PostSchema = z.object({
   id: z.string(),
   title: z.string(),
-  content: z.string(),
+  content: z.array(z.string()),
   createdAt: z.string().datetime().optional(),
 });
 

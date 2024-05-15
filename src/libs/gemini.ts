@@ -41,16 +41,11 @@ export async function gemini(prompt: string, userPrompt: CUSTOM_PROMPT_TYPE) {
   const genAI = new GoogleGenerativeAI(API_KEY);
   const model = genAI.getGenerativeModel({ model: MODEL_NAME });
 
-  const customUserPrompt = `${userPrompt.prompt}. Voice tone has to be ${userPrompt.voice}, ${
-    userPrompt.isEmoji && "add emojis end of a sentence if needed"
-  }, ${userPrompt.isHashtag && "add 2 hashtags which is most relevant to the post"}, ${
-    userPrompt.isFormatPost &&
-    "and format the post by adding (enter-space) word at the end of the sentence, add that only on the content property."
-  }`;
-
   const parts = [
     { text: `input: ${prompt}` },
-    { text: `output: ${POST_PROPMT}. ${customUserPrompt}` },
+    {
+      text: `output: ${POST_PROPMT} ${userPrompt.prompt && `Here is the user prompt: ${userPrompt.prompt}`}. ${userPrompt.isEmoji ? "The posts should include emojis in the end of the sentence" : ""}, ${userPrompt.isHashtag ? "2 hashtag related to the posts" : ""}. Format the post by adding each paragraph as an array element, and then if the posts has a to show list of bullet points then use * before each item (example - usability principles: * Learnability, * Efficiency, * Memorability, * Errors, * User Satisfaction.) must add the list items in a separate array element, don't over use bullet points, use it when needed. Use clear and conscious language write in a ${userPrompt.voice} voice tone.`,
+    },
   ];
 
   const result = await model.generateContent({

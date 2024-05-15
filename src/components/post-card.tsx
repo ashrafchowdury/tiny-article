@@ -30,8 +30,8 @@ const PostCard = ({
 }) => {
   const [content, setContent] = useState(
     `${data.title}
-  
-${data.content}` ?? ""
+
+${data.content.flatMap((item) => `${item.replaceAll('**', '').replaceAll("*", "-")}\n \n`)}` ?? ""
   );
 
   return (
@@ -77,7 +77,7 @@ ${data.content}` ?? ""
                   <textarea
                     className="w-full h-[252px] border p-4 outline-none bg-transparent"
                     placeholder="Edit the post"
-                    defaultValue={data.content}
+                    defaultValue={""}
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                   ></textarea>
@@ -120,7 +120,13 @@ ${data.content}` ?? ""
       </div>
 
       <div className="py-2 px-3 w-full">
-        <pre className="text-sm text-wrap">{data.content}</pre>
+        <pre className="text-sm text-wrap">
+          {data.content.flatMap((item) => (
+            <span className="block mb-2">
+              {item.replaceAll("**", "").replaceAll("*", "-")}
+            </span>
+          ))}
+        </pre>
       </div>
     </div>
   );
