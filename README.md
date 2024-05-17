@@ -13,7 +13,6 @@ I'm not exactly sure what I'm building yet; I've just started randomly. That's w
 - Prisma - As ORM
 - PosthogJs - For alalytics
 - Resend - To send email
-- Trigger - To handle backgound jobs
 - React-query - For data handling in client side
 - shadcn/ui - For ui components
 - Zod - For data validation
