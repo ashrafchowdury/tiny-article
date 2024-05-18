@@ -101,7 +101,7 @@ const Sidebar = ({ className }: { className?: string }) => {
       </section>
 
       {isLoaded ? (
-        <SignOutButton>
+        <SignOutButton redirectUrl="/">
           <div className="text-sm flex items-center py-3 px-3 md:px-6 w-full hover:bg-input duration-200 text-[16px] font-medium cursor-pointer opacity-65 hover:opacity-100">
             <LogOut className="w-4 h-4 mr-3" /> Sign Out
           </div>

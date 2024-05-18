@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { cachePosts, getPostBatches } from "./cache-algorithm";
 import prisma from "@/libs/prisma";
 import { PostsSchema } from "@/libs/validations";
+import { auth } from "@clerk/nextjs/server";
 
 export async function GET(
   req: NextRequest,
@@ -10,16 +11,8 @@ export async function GET(
   const userId = params.user;
 
   try {
-    if (!userId) {
+    if (!userId || userId !== auth().userId) {
       throw new Error("Unothorized request!");
-    }
-
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-    });
-
-    if (!user) {
-      throw new Error("Invalid user!");
     }
 
     const posts = await getPostBatches(userId);
@@ -46,16 +39,8 @@ export async function POST(
       throw new Error(validateData.error.message);
     }
 
-    if (!userId) {
+    if (!userId || userId !== auth().userId) {
       throw new Error("Unothorized request!");
-    }
-
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-    });
-
-    if (!user) {
-      throw new Error("Invalid user id");
     }
 
     const newHistory = await cachePosts(userId, validateData.data);

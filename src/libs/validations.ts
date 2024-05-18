@@ -5,6 +5,7 @@ export const PostSchema = z.object({
   id: z.string(),
   title: z.string(),
   content: z.array(z.string()),
+  hashtags: z.array(z.string()).optional(),
   createdAt: z.string().datetime().optional(),
 });
 
