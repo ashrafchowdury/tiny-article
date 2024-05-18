@@ -14,7 +14,7 @@ export default function Home() {
           <Link href="/">About</Link>
         </div>
 
-        <Link href="/sign-in">
+        <Link href="/editor">
           <Button className="font-medium px-5 py-1.5 rounded-md text-xs sm:text-sm">
             Get Started
           </Button>

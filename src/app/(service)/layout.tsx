@@ -17,7 +17,7 @@ export default function ServiceLayout({
         <nav className="w-full mb-5 px-5 sm:px-7 lg:px-10 h-[65px] flex items-center justify-between lg:hidden">
           <p>Project-X</p>{" "}
           <Sheet>
-            <SheetTrigger>
+            <SheetTrigger asChild>
               <Button className="w-7 h-7" size="icon" variant="outline">
                 <PanelRightClose className="w-4 h-4" />
               </Button>
