@@ -25,6 +25,7 @@ export default function RootLayout({
       signUpForceRedirectUrl="/editor"
       signInUrl="/sign-in"
       signUpUrl="/sign-up"
+      afterSignOutUrl="/"
     >
       <html lang="en">
         <body className={cn(outfit.className, "bg-backgournd")}>

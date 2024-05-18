@@ -22,6 +22,7 @@ import {
 import { cn } from "@/libs/utils";
 import { useTotalUsage } from "@/libs/queries/useLimit";
 import { TriangleAlert } from "lucide-react";
+import { defaultUserPromptSettings as defaultSettings } from "@/utils/constant";
 
 const Settings = () => {
   const { userId } = useAuth();
@@ -29,14 +30,11 @@ const Settings = () => {
   const fetcher = useFetchCustomPrompt({ userId });
   const limit = useTotalUsage({ userId });
 
-  const [customPrompt, setCustomPrompt] = useState("");
-  const [selectTone, setSelectTone] = useState<VOICE_TYPE>("netural");
-  const [utilities, setUtilities] = useState({
-    isFormatPost: true,
-    isEmoji: false,
-    isHashtag: false,
-    isAutoSavePost: true,
-  });
+  const [customPrompt, setCustomPrompt] = useState(defaultSettings.prompt);
+  const [selectTone, setSelectTone] = useState<VOICE_TYPE>(
+    defaultSettings.voice
+  );
+  const [utilities, setUtilities] = useState({ ...defaultSettings.utilities });
 
   type UtilityKeys = keyof typeof utilities;
   const onUtilityChange = (title: UtilityKeys) => {
@@ -54,11 +52,9 @@ const Settings = () => {
 
   const handleResetSettings = async () => {
     const data = {
-      voice: "netural" as VOICE_TYPE,
-      isFormatPost: true,
-      isEmoji: false,
-      isHashtag: false,
-      isAutoSavePost: true,
+      prompt: defaultSettings.prompt,
+      voice: defaultSettings.voice,
+      ...defaultSettings.utilities,
     };
     updatePrompt.mutate(data);
   };

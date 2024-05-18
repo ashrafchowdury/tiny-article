@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/libs/prisma";
 import { CustomPromptSchema } from "@/libs/validations";
+import { auth } from "@clerk/nextjs/server";
 
 export async function GET(
   req: NextRequest,
@@ -9,16 +10,8 @@ export async function GET(
   const userId = params.user;
 
   try {
-    if (!userId) {
+    if (!userId || userId !== auth().userId) {
       throw new Error("Unothorized request!");
-    }
-
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-    });
-
-    if (!user) {
-      throw new Error("Invalid user!");
     }
 
     const prompt = await prisma.prompt.findFirst({
@@ -27,10 +20,7 @@ export async function GET(
 
     return NextResponse.json({ data: prompt }, { status: 200 });
   } catch (error: any) {
-    return NextResponse.json(
-      { error: "Failed to load custom prompt" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: error.message }, { status: 400 });
   }
 }
 
@@ -47,7 +37,7 @@ export async function POST(
       throw new Error(validateData.error.message);
     }
 
-    if (!userId) {
+    if (!userId || userId !== auth().userId) {
       throw new Error("Unothorized request!");
     }
 
@@ -56,7 +46,7 @@ export async function POST(
     });
 
     const newCustomPrompt = await prisma.prompt.upsert({
-      where: { id: findCustomPrompt?.id },
+      where: { authorId: userId },
       update: {
         ...validateData.data,
       },

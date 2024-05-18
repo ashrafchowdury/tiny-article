@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import cache from "@/libs/cache";
+import { auth } from "@clerk/nextjs/server";
 
 export async function GET(
   req: NextRequest,
@@ -8,8 +9,8 @@ export async function GET(
   const userId = params.user;
 
   try {
-    if (!userId) {
-      throw new Error("Invalid credential!");
+    if (!userId || userId !== auth().userId) {
+      throw new Error("Unothorized request!");
     }
 
     const totalUsage = (await cache.get(`limit:${userId}`)) as number;

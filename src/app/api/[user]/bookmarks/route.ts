@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/libs/prisma";
 import { PostSchema } from "@/libs/validations";
+import { auth } from "@clerk/nextjs/server";
 
 export async function GET(
   req: NextRequest,
@@ -9,28 +10,17 @@ export async function GET(
   const userId = params.user;
 
   try {
-    if (!userId) {
+    if (!userId || userId !== auth().userId) {
       throw new Error("Unothorized request!");
     }
 
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-    });
-
-    if (!user) {
-      throw new Error("Invalid user!");
-    }
-
     const bookmarks = await prisma.bookmark.findMany({
-      where: { authorId: user.id },
+      where: { authorId: userId },
     });
 
     return NextResponse.json({ data: bookmarks }, { status: 200 });
-  } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to load bookmarks" },
-      { status: 400 }
-    );
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
   }
 }
 
@@ -47,16 +37,8 @@ export async function POST(
       throw new Error(validateData?.error.message);
     }
 
-    if (!userId) {
+    if (!userId || userId !== auth().userId) {
       throw new Error("Unothorized request!");
-    }
-
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-    });
-
-    if (!user) {
-      throw new Error("Invalid user!");
     }
 
     const new_bookmark = await prisma.bookmark.create({
@@ -64,7 +46,7 @@ export async function POST(
         id: validateData.data.id,
         title: validateData.data.title,
         content: validateData.data.content,
-        authorId: user.id,
+        authorId: userId,
       },
       select: { authorId: false, id: true, title: true, content: true },
     });
@@ -83,16 +65,8 @@ export async function DELETE(
   const userId = params.user;
 
   try {
-    if (!userId) {
+    if (!userId || userId !== auth().userId) {
       throw new Error("Unothorized request!");
-    }
-
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-    });
-
-    if (!user) {
-      throw new Error("Invalid user!");
     }
 
     const delete_bookmark = await prisma.bookmark.delete({
@@ -100,10 +74,7 @@ export async function DELETE(
     });
 
     return NextResponse.json({ data: delete_bookmark }, { status: 203 });
-  } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to delete bookmark" },
-      { status: 400 }
-    );
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
   }
 }

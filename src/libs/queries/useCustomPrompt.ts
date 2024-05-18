@@ -3,6 +3,7 @@ import { queryClient } from "@/libs/query";
 import { UserId, CUSTOM_PROMPT_TYPE } from "@/utils/types";
 import { toast } from "sonner";
 import { CustomPromptSchema } from "@/libs/validations";
+import { defaultUserPromptSettings } from "@/utils/constant";
 
 // constants
 const KEY = ["custom-prompt"];
@@ -15,7 +16,15 @@ export const useFetchCustomPrompt = ({ userId }: UserId) => {
       const data = await fetch(`api/${userId}/custom-prompt`);
       const result = await data.json();
 
-      const validateData = CustomPromptSchema.safeParse(result.data);
+      const defaultSettings = {
+        prompt: defaultUserPromptSettings.prompt,
+        voice: defaultUserPromptSettings.voice,
+        ...defaultUserPromptSettings.utilities,
+      };
+
+      const validateData = CustomPromptSchema.safeParse(
+        !result.data ? defaultSettings : result.data
+      );
 
       if (!validateData.success) {
         console.log(validateData.error.message);

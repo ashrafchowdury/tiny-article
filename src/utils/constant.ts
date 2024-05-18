@@ -1,3 +1,5 @@
+import { VOICE_TYPE } from "./types";
+
 // post output schema
 export const SCHEMA = JSON.stringify([
   {
@@ -37,6 +39,18 @@ export const voices = [
   "empathetic",
   "funny",
 ] as const;
+
+//
+export const defaultUserPromptSettings = {
+  prompt: "",
+  voice: "netural" as VOICE_TYPE,
+  utilities: {
+    isFormatPost: true,
+    isEmoji: true,
+    isHashtag: false,
+    isAutoSavePost: false,
+  },
+};
 
 // User utility settings
 export const utility = [
