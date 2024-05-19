@@ -3,6 +3,7 @@ import { queryClient } from "@/libs/query";
 import { POST_TYPE, UserId } from "@/utils/types";
 import { toast } from "sonner";
 import { PostsSchema } from "../validations";
+import axios from "axios";
 
 // constants
 const KEY = ["bookmarks"];
@@ -12,10 +13,11 @@ export const useFetchBookmarks = ({ userId }: UserId) => {
   const fetcher = useQuery({
     queryKey: KEY,
     queryFn: async () => {
-      const data = await fetch(`api/${userId}/bookmarks`);
-      const result = await data.json();
+      const res = await axios.get(`api/${userId}/bookmarks`);
 
-      const validateData = PostsSchema.safeParse(result.data);
+      if (res.statusText !== "OK") return;
+
+      const validateData = PostsSchema.safeParse(res.data);
 
       if (!validateData.success) {
         throw new Error(validateData.error.message);
@@ -35,13 +37,13 @@ export const useUpdateBookmark = ({ userId }: UserId) => {
   const updatetor = useMutation({
     mutationKey: KEY,
     mutationFn: async (data: POST_TYPE) => {
-      await fetch(`api/${userId}/bookmarks`, {
-        method: "POST",
-        body: JSON.stringify({ ...data }),
+      const res = await axios.post(`api/${userId}/bookmarks`, data, {
         headers: {
           "Content-Type": "application/json",
         },
       });
+      if (res.statusText !== "OK") return null;
+
       return data;
     },
     onSuccess: (data) => {

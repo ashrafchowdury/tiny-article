@@ -20,9 +20,7 @@ export async function POST(req: NextRequest) {
     const totalUsage = (await cache.get(`limit:${userId}`)) as number;
 
     if (totalUsage >= MAX_USAGE_LIMIT) {
-      return NextResponse.json("You have reashed your daily limit", {
-        status: 400,
-      });
+      throw new Error("You have reashed your daily limit");
     }
 
     // generate posts
@@ -38,12 +36,8 @@ export async function POST(req: NextRequest) {
       await cache.incrby(`limit:${userId}`, 1);
     }
 
-    return NextResponse.json({ data }, { status: 201 });
+    return NextResponse.json(data, { status: 201 });
   } catch (error: any) {
-    console.log("error message", error.message);
-    return NextResponse.json(
-      { message: "Encounter error while triyng to generate posts" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: error.message }, { status: 400 });
   }
 }

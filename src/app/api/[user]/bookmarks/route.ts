@@ -18,7 +18,7 @@ export async function GET(
       where: { authorId: userId },
     });
 
-    return NextResponse.json({ data: bookmarks }, { status: 200 });
+    return NextResponse.json(bookmarks, { status: 200 });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
@@ -51,7 +51,7 @@ export async function POST(
       select: { authorId: false, id: true, title: true, content: true },
     });
 
-    return NextResponse.json({ data: new_bookmark }, { status: 201 });
+    return NextResponse.json(new_bookmark, { status: 201 });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
@@ -73,7 +73,7 @@ export async function DELETE(
       where: { id: postId },
     });
 
-    return NextResponse.json({ data: delete_bookmark }, { status: 203 });
+    return NextResponse.json(delete_bookmark, { status: 203 });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }

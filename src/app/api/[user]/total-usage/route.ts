@@ -15,14 +15,10 @@ export async function GET(
 
     const totalUsage = (await cache.get(`limit:${userId}`)) as number;
 
-    return NextResponse.json(
-      { data: totalUsage == null ? 0 : totalUsage },
-      { status: 200 }
-    );
+    return NextResponse.json(totalUsage == null ? 0 : totalUsage, {
+      status: 200,
+    });
   } catch (error: any) {
-    return NextResponse.json(
-      { message: "Encounter error while triyng to fetch usage limit" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: error.message }, { status: 400 });
   }
 }
