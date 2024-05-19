@@ -44,12 +44,10 @@ export const voices = [
 export const defaultUserPromptSettings = {
   prompt: "",
   voice: "netural" as VOICE_TYPE,
-  utilities: {
-    isFormatPost: true,
-    isEmoji: true,
-    isHashtag: false,
-    isAutoSavePost: false,
-  },
+  isFormatPost: true,
+  isEmoji: true,
+  isHashtag: false,
+  isAutoSavePost: false,
 };
 
 // User utility settings

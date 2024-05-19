@@ -21,7 +21,7 @@ export const createNewPostsBatch = async (
 
     return data;
   } catch (error) {
-    throw new Error("Encounter error while triyng to save new posts");
+    throw new Error("Encounter error while triyng to save history");
   }
 };
 
@@ -37,7 +37,7 @@ export const updatePostsBatch = async (
 
     return data;
   } catch (error) {
-    throw new Error("Encounter error while triyng to update posts");
+    throw new Error("Encounter error while triyng to update history");
   }
 };
 
@@ -67,7 +67,7 @@ export const isRecentBatch = async (userId: string) => {
 
     return null; // No recent batch found
   } catch (error) {
-    throw new Error("Encounter error while triyng find recent post batchs");
+    throw new Error("Encounter error while triyng find recent history batchs");
   }
 };
 
@@ -105,7 +105,6 @@ export const getPostBatches = async (userId: string) => {
       return [];
     }
   } catch (error: any) {
-    console.log(error.message);
-    throw new Error("Something went wrong, can't access to posts data");
+    throw new Error("Something went wrong, unable to access history");
   }
 };

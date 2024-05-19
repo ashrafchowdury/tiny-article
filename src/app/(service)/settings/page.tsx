@@ -30,11 +30,14 @@ const Settings = () => {
   const fetcher = useFetchCustomPrompt({ userId });
   const limit = useTotalUsage({ userId });
 
-  const [customPrompt, setCustomPrompt] = useState(defaultSettings.prompt);
-  const [selectTone, setSelectTone] = useState<VOICE_TYPE>(
-    defaultSettings.voice
-  );
-  const [utilities, setUtilities] = useState({ ...defaultSettings.utilities });
+  const [customPrompt, setCustomPrompt] = useState("");
+  const [selectTone, setSelectTone] = useState<VOICE_TYPE>("netural");
+  const [utilities, setUtilities] = useState({
+    isFormatPost: true,
+    isEmoji: true,
+    isHashtag: false,
+    isAutoSavePost: false,
+  });
 
   type UtilityKeys = keyof typeof utilities;
   const onUtilityChange = (title: UtilityKeys) => {
@@ -51,12 +54,7 @@ const Settings = () => {
   };
 
   const handleResetSettings = async () => {
-    const data = {
-      prompt: defaultSettings.prompt,
-      voice: defaultSettings.voice,
-      ...defaultSettings.utilities,
-    };
-    updatePrompt.mutate(data);
+    updatePrompt.mutate(defaultSettings);
   };
 
   useEffect(() => {

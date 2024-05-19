@@ -14,6 +14,7 @@ import { useTotalUsage } from "@/libs/queries/useLimit";
 import { toast } from "sonner";
 import { PostsSchema } from "@/libs/validations";
 import { queryClient } from "@/libs/query";
+import axios from "axios";
 
 const Editor = () => {
   const [url, setUrl] = useState("");
@@ -30,17 +31,22 @@ const Editor = () => {
   const { isPending, data, mutate, isError, reset } = useMutation({
     mutationKey: ["new-posts"],
     mutationFn: async (prompt: string) => {
-      const res = await fetch("/api/generator", {
-        method: "POST",
-        body: JSON.stringify({ prompt, userPrompt: userPrompt.data, userId }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const res = await axios.post(
+        "/api/generator",
+        { prompt, userPrompt: userPrompt.data, userId },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-      const data = await res.json();
+      if (res.statusText !== "OK") {
+        throw new Error("Encounter error while triyng to generate posts");
+      }
+
       const refinedData = JSON.parse(
-        data.data.replace("```json", "").replace("```", "")
+        res.data.replace("```json", "").replace("```", "")
       );
 
       const validateData = PostsSchema.safeParse(refinedData);
@@ -51,7 +57,7 @@ const Editor = () => {
 
       return validateData.data;
     },
-    onSuccess: (data) => {
+    onSuccess: (data: POST_TYPE[]) => {
       userPrompt.data?.isAutoSavePost && saveHistory.mutate(data);
       queryClient.setQueryData(["total-usage"], () => limit.data?.usage + 1);
     },

@@ -15,7 +15,7 @@ export async function GET(
     const user = await currentUser();
 
     return NextResponse.json({ data: user }, { status: 200 });
-  } catch (error) {
-    return NextResponse.json({ error: "Failed to load user" }, { status: 400 });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
   }
 }

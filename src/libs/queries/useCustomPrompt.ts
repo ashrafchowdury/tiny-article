@@ -3,7 +3,7 @@ import { queryClient } from "@/libs/query";
 import { UserId, CUSTOM_PROMPT_TYPE } from "@/utils/types";
 import { toast } from "sonner";
 import { CustomPromptSchema } from "@/libs/validations";
-import { defaultUserPromptSettings } from "@/utils/constant";
+import axios from "axios";
 
 // constants
 const KEY = ["custom-prompt"];
@@ -13,21 +13,14 @@ export const useFetchCustomPrompt = ({ userId }: UserId) => {
   const fetcher = useQuery({
     queryKey: KEY,
     queryFn: async () => {
-      const data = await fetch(`api/${userId}/custom-prompt`);
-      const result = await data.json();
+      const res = await axios.get(`api/${userId}/custom-prompt`);
 
-      const defaultSettings = {
-        prompt: defaultUserPromptSettings.prompt,
-        voice: defaultUserPromptSettings.voice,
-        ...defaultUserPromptSettings.utilities,
-      };
+      if (res.statusText !== "OK") return;
 
-      const validateData = CustomPromptSchema.safeParse(
-        !result.data ? defaultSettings : result.data
-      );
+      const validateData = CustomPromptSchema.safeParse(res.data);
 
       if (!validateData.success) {
-        console.log(validateData.error.message);
+        throw new Error(validateData.error.message);
         return;
       }
 
@@ -45,15 +38,14 @@ export const useUpdateCustomPrompt = ({ userId }: UserId) => {
   const updatetor = useMutation({
     mutationKey: KEY,
     mutationFn: async (data: CUSTOM_PROMPT_TYPE) => {
-      const res = await fetch(`api/${userId}/custom-prompt`, {
-        method: "POST",
-        body: JSON.stringify({ ...data }),
+      const res = await axios.post(`api/${userId}/custom-prompt`, data, {
         headers: {
           "Content-Type": "application/json",
         },
       });
-      const result = await res.json();
-      return result.data;
+      if (res.statusText !== "OK") return;
+
+      return res.data;
     },
     onSuccess: (data) => {
       queryClient.setQueryData(KEY, (prevData: CUSTOM_PROMPT_TYPE) => data);

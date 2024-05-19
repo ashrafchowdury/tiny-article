@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { UserId } from "@/utils/types";
 import { MAX_USAGE_LIMIT } from "@/utils/constant";
+import axios from "axios";
 
 // constants
 const KEY = ["total-usage"];
@@ -10,10 +11,11 @@ export const useTotalUsage = ({ userId }: UserId) => {
   const fetcher = useQuery({
     queryKey: KEY,
     queryFn: async () => {
-      const totalUsage = await fetch(`api/${userId}/total-usage`);
-      const result = await totalUsage.json();
+      const res = await axios.get(`api/${userId}/total-usage`);
 
-      return { usage: result.data, reached: result.data >= MAX_USAGE_LIMIT };
+    if (res.statusText !== "OK") return;
+
+      return { usage: res.data, reached: res.data >= MAX_USAGE_LIMIT };
     },
     refetchOnWindowFocus: false,
     retry: RETRY,
