@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import {
   Select,
   SelectContent,
@@ -196,12 +196,14 @@ const Settings = () => {
             </label>
             <div className="space-y-4">
               {utility.map((item) => (
-                <SwitchElement
-                  title={item.title}
-                  id={item.key}
-                  checked={utilities[item.key as UtilityKeys]}
-                  onClick={() => onUtilityChange(item.key as UtilityKeys)}
-                />
+                <Fragment key={item.key}>
+                  <SwitchElement
+                    title={item.title}
+                    id={item.key}
+                    checked={utilities[item.key as UtilityKeys]}
+                    onClick={() => onUtilityChange(item.key as UtilityKeys)}
+                  />
+                </Fragment>
               ))}
             </div>
           </div>

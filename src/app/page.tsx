@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <main className="xl:w-[1150px] lg:w-[1025px] md:w-[750px] sm:w-[550px] w-[95%] mx-auto">
       <nav className="w-full h-[70px] sm:h-[80px] flex items-center justify-between">
-        <p className="text-xl font-semibold">tiny'article</p>
+        <p className="text-xl font-semibold">tiny_article</p>
 
         <div className="items-center space-x-5 hidden sm:flex *:text-sm">
           <Link href="/">Home</Link>

@@ -30,8 +30,8 @@ const History = () => {
         disable this feature from the settings page.
       </p>
 
-      {history.data?.map((value: POST_TYPE[]) => (
-        <section className="mt-10">
+      {history.data?.map((value: POST_TYPE[], ind) => (
+        <section className="mt-10" key={ind}>
           <p className="text-xs font-medium opacity-70 mb-3">Today</p>
           <div className="w-full flex flex-wrap items-center justify-start">
             {value?.map((item: POST_TYPE) => (

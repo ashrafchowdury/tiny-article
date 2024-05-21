@@ -24,7 +24,7 @@ const Sidebar = ({ className }: { className?: string }) => {
         <div className="space-y-2 md:space-y-4">
           <div className="mx-3 md:mx-6 space-x-2 flex items-center">
             <p className="text-lg md:text-xl font-bold opacity-60">
-              tiny'article
+              tiny_article
             </p>
           </div>
           <div className="w-[90%] md:w-[83%] border border-border mx-auto"></div>
