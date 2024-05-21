@@ -12,7 +12,7 @@ import {
   DialogContent,
 } from "@/components/ui";
 import { POST_TYPE } from "@/utils/types";
-import CopyButton from "./micro/copy-button";
+import CopyButton from "./copy-button";
 import { cn } from "@/libs/utils";
 
 const PostCard = ({

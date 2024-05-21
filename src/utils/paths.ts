@@ -32,12 +32,12 @@ const paths = {
   ],
   resource: [
     {
-      url: "/",
+      url: "#resources",
       icon: SquareLibrary,
       title: "Resources",
     },
     {
-      url: "/",
+      url: "/https://github.com/ashrafchowdury/tiny-article",
       icon: LifeBuoy,
       title: "Support",
     },

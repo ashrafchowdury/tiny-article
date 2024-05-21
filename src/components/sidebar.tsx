@@ -2,7 +2,6 @@
 import React from "react";
 import Link from "next/link";
 import { EllipsisVertical, LogOut, XIcon } from "lucide-react";
-import Image from "next/image";
 import paths from "@/utils/paths";
 import { useUser } from "@clerk/nextjs";
 import SidebarUserProfileCardSkeleton from "./skeletons/sidebar-user-profile-card-skeleton";
@@ -24,14 +23,9 @@ const Sidebar = ({ className }: { className?: string }) => {
       <section>
         <div className="space-y-2 md:space-y-4">
           <div className="mx-3 md:mx-6 space-x-2 flex items-center">
-            <Image
-              src=""
-              alt=""
-              width={28}
-              height={28}
-              className="border rounded-sm w-5 h-5 md:w-7 md:h-7"
-            />{" "}
-            <p className="text-lg md:text-xl font-bold opacity-60">Project-X</p>
+            <p className="text-lg md:text-xl font-bold opacity-60">
+              tiny'article
+            </p>
           </div>
           <div className="w-[90%] md:w-[83%] border border-border mx-auto"></div>
           {isLoaded && isSignedIn ? (
