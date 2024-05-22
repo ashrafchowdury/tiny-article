@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import {
-  cachePosts,
-  getPostBatches,
-} from "@/helpers/algorithms/cache-algorithm";
+// import {
+//   cachePosts,
+//   getPostBatches,
+// } from "@/helpers/algorithms/cache-algorithm";
 import { PostsSchema } from "@/libs/validations";
 import { auth } from "@clerk/nextjs/server";
 
@@ -17,7 +17,8 @@ export async function GET(
       throw new Error("Unothorized request!");
     }
 
-    const posts = await getPostBatches(userId);
+    // const posts = await getPostBatches(userId);
+    const posts: any = [];
 
     return NextResponse.json(posts, { status: 200 });
   } catch (error: any) {
@@ -42,7 +43,8 @@ export async function POST(
       throw new Error("Unothorized request!");
     }
 
-    const newHistory = await cachePosts(userId, validateData.data);
+    // const newHistory = await cachePosts(userId, validateData.data);
+    const newHistory: any = [];
 
     return NextResponse.json(newHistory, { status: 201 });
   } catch (error: any) {

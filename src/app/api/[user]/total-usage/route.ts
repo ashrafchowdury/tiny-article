@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import cache from "@/libs/cache";
+// import cache from "@/libs/cache";
 import { auth } from "@clerk/nextjs/server";
 
 export async function GET(
@@ -13,7 +13,8 @@ export async function GET(
       throw new Error("Unothorized request!");
     }
 
-    const totalUsage = (await cache.get(`limit:${userId}`)) as number;
+    // const totalUsage = (await cache.get(`limit:${userId}`)) as number;
+    const totalUsage = null;
 
     return NextResponse.json(totalUsage == null ? 0 : totalUsage, {
       status: 200,
