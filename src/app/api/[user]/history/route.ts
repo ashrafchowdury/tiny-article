@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { cachePosts, getPostBatches } from "./cache-algorithm";
+import {
+  cachePosts,
+  getPostBatches,
+} from "@/helpers/algorithms/cache-algorithm";
 import { PostsSchema } from "@/libs/validations";
 import { auth } from "@clerk/nextjs/server";
 

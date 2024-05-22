@@ -3,9 +3,9 @@ import React, { Fragment } from "react";
 import PostCard from "@/components/post-card";
 import { POST_TYPE } from "@/utils/types";
 import { useAuth } from "@clerk/nextjs";
-import { useFetchHistory } from "@/libs/queries/useHistory";
+import { useFetchHistory } from "@/helpers/queries/useHistory";
 import PostCardSkeleton from "@/components/skeletons/post-card-skeleton";
-import { useUpdateBookmark } from "@/libs/queries/useBookmark";
+import { useUpdateBookmark } from "@/helpers/queries/useBookmark";
 
 const History = () => {
   const { userId } = useAuth();

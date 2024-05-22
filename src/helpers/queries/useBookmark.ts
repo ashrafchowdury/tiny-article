@@ -2,7 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { queryClient } from "@/libs/query";
 import { POST_TYPE, UserId } from "@/utils/types";
 import { toast } from "sonner";
-import { PostsSchema } from "../validations";
+import { PostsSchema } from "../../libs/validations";
 import axios from "axios";
 
 // constants

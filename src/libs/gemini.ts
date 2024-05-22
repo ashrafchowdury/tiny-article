@@ -3,7 +3,7 @@ import {
   HarmCategory,
   HarmBlockThreshold,
 } from "@google/generative-ai";
-import { POST_PROPMT } from "@/utils/constant";
+import { POST_PROPMT } from "@/utils/prompt";
 import { CUSTOM_PROMPT_TYPE } from "@/utils/types";
 
 // constant variables

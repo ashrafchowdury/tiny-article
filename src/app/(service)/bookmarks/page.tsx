@@ -7,7 +7,7 @@ import PostCardSkeleton from "@/components/skeletons/post-card-skeleton";
 import {
   useDeleteBookmark,
   useFetchBookmarks,
-} from "@/libs/queries/useBookmark";
+} from "@/helpers/queries/useBookmark";
 
 const Bookmarks = () => {
   const { userId } = useAuth();

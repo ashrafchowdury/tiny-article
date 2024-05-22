@@ -18,9 +18,9 @@ import { VOICE_TYPE } from "@/utils/types";
 import {
   useUpdateCustomPrompt,
   useFetchCustomPrompt,
-} from "@/libs/queries/useCustomPrompt";
+} from "@/helpers/queries/useCustomPrompt";
 import { cn } from "@/libs/utils";
-import { useTotalUsage } from "@/libs/queries/useLimit";
+import { useTotalUsage } from "@/helpers/queries/useLimit";
 import { TriangleAlert } from "lucide-react";
 import { defaultUserPromptSettings as defaultSettings } from "@/utils/constant";
 
