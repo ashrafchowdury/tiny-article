@@ -7,7 +7,7 @@ import { POST_PROPMT } from "@/utils/prompt";
 import { CUSTOM_PROMPT_TYPE } from "@/utils/types";
 
 // constant variables
-export const MODEL_NAME = "gemini-1.5-pro-latest";
+export const MODEL_NAME = process.env.GEMINI_API_MODEL as string;
 export const API_KEY = process.env.GEMINI_API_KEY as string;
 
 // configurations

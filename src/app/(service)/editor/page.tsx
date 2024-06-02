@@ -41,7 +41,7 @@ const Editor = () => {
         }
       );
 
-      if (res.statusText !== "OK") {
+      if (res.status >= 400) {
         throw new Error("Encounter error while triyng to generate posts");
       }
 
@@ -144,7 +144,7 @@ const Editor = () => {
 
       {data && (
         <section className="w-full mt-10">
-          <h2 className="text-xl font-bold opacity-65 mb-4">Posts</h2>
+          <h2 className="text-xl font-bold opacity-65 mb-3">Posts</h2>
 
           <div className="w-full flex flex-wrap items-center justify-start">
             {data.map((item: POST_TYPE) => (
