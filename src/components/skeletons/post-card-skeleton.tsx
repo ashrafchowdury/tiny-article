@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, memo } from "react";
 import { Skeleton } from "../ui";
 
 const PostCardSkeleton = () => {
@@ -28,4 +28,4 @@ const PostCardSkeleton = () => {
   );
 };
 
-export default PostCardSkeleton;
+export default memo(PostCardSkeleton);

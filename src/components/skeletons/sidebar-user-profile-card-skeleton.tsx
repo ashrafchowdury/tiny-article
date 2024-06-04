@@ -1,4 +1,4 @@
-import React from "react";
+import { memo } from "react";
 import { Skeleton } from "../ui";
 
 const SidebarUserProfileCardSkeleton = () => {
@@ -14,4 +14,4 @@ const SidebarUserProfileCardSkeleton = () => {
   );
 };
 
-export default SidebarUserProfileCardSkeleton;
+export default memo(SidebarUserProfileCardSkeleton);
