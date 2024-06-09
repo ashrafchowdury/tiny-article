@@ -9,9 +9,11 @@ import { Dialog, DialogContent, DialogTrigger, Button } from "./ui";
 import { UserProfile, SignOutButton } from "@clerk/nextjs";
 import { Skeleton } from "./ui";
 import { cn } from "@/libs/utils";
+import { usePathname } from "next/navigation";
 
 const Sidebar = ({ className }: { className?: string }) => {
   const { isLoaded, isSignedIn, user } = useUser();
+  const pathname = usePathname();
 
   return (
     <aside
@@ -73,7 +75,12 @@ const Sidebar = ({ className }: { className?: string }) => {
         <div className="w-full">
           {paths.service.map((item) => (
             <Link href={item.url} key={item.title}>
-              <button className="flex items-center py-3 px-3 md:px-6 w-full hover:bg-input duration-200 text-sm font-medium my-1">
+              <button
+                className={cn(
+                  "flex items-center py-3 px-3 md:px-6 w-full hover:bg-input duration-200 text-sm font-medium my-1",
+                  item.url == pathname && "bg-input"
+                )}
+              >
                 <item.icon className="w-4 h-4 mr-3" /> {item.title}
               </button>
             </Link>
