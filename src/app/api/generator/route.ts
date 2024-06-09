@@ -5,7 +5,7 @@ import cache from "@/libs/cache";
 import { MAX_USAGE_LIMIT } from "@/utils/constant";
 
 export async function POST(req: NextRequest) {
-  const { prompt, userPrompt, userId } = await req.json();
+  const { prompt, userPrompt, userId, type } = await req.json();
   const validateUserPrompt = CustomPromptSchema.safeParse(userPrompt);
 
   try {
@@ -20,11 +20,15 @@ export async function POST(req: NextRequest) {
     const totalUsage = (await cache.get(`limit:${userId}`)) as number;
 
     if (totalUsage >= MAX_USAGE_LIMIT) {
-      throw new Error("You have reashed your daily limit");
+      throw new Error("You have reached your daily limit");
     }
 
     // generate posts
-    const data = await gemini(prompt, validateUserPrompt.data);
+    const data = await gemini({
+      prompt,
+      type,
+      userPrompt: validateUserPrompt.data,
+    });
 
     if (!data) {
       throw new Error("Unable to generate posts.");
