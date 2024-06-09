@@ -16,6 +16,8 @@ import { PostsSchema } from "@/libs/validations";
 import { queryClient } from "@/libs/query";
 import axios from "axios";
 
+type PROMPT_TYPE = { prompt: string; type: "url" | "article" };
+
 const Editor = () => {
   const [url, setUrl] = useState("");
   const [article, setArticle] = useState("");
@@ -30,10 +32,10 @@ const Editor = () => {
   // query
   const { isPending, data, mutate, isError, reset } = useMutation({
     mutationKey: ["new-posts"],
-    mutationFn: async (prompt: string) => {
+    mutationFn: async (data: PROMPT_TYPE) => {
       const res = await axios.post(
         "/api/generator",
-        { prompt, userPrompt: userPrompt.data, userId },
+        { ...data, userPrompt: userPrompt.data, userId },
         {
           headers: {
             "Content-Type": "application/json",
@@ -60,11 +62,24 @@ const Editor = () => {
     onSuccess: (data: POST_TYPE[]) => {
       userPrompt.data?.isAutoSavePost && saveHistory.mutate(data);
       queryClient.setQueryData(["total-usage"], () => limit.data?.usage + 1);
+
+      setUrl("");
+      setArticle("");
     },
     onError: () => {
       toast.error("Encounter error. Please try again later");
     },
   });
+
+  const onSubmit = (prompt: PROMPT_TYPE) => {
+    if (limit.data?.reached) return;
+
+    if (data && data?.length > 0) {
+      reset();
+    }
+
+    mutate(prompt);
+  };
 
   return (
     <>
@@ -85,13 +100,13 @@ const Editor = () => {
             className="w-full py-2.5 px-4 rounded-md bg-input outline-none text-sm"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            disabled={true}
           />
 
           <Button
             size="icon"
             className="w-8 h-8 bg-primary absolute top-[4px] right-[5px]"
-            disabled={isPending || Boolean(article) || !Boolean(url) || true}
+            disabled={isPending || Boolean(article) || !Boolean(url)}
+            onClick={() => onSubmit({ prompt: url, type: "url" })}
           >
             <SendHorizontal className="w-4 h-4" />
           </Button>
@@ -128,11 +143,7 @@ const Editor = () => {
               <Button
                 className="text-xs lg:text-sm font-semibold"
                 disabled={isPending || Boolean(url) || !Boolean(article)}
-                onClick={() => {
-                  if (limit.data?.reached) return;
-                  reset();
-                  mutate(article);
-                }}
+                onClick={() => onSubmit({ prompt: article, type: "article" })}
               >
                 {isPending ? "Generating" : "Generate"}
                 <SendHorizontal className="w-3 h-3 ml-2 hidden sm:block" />
