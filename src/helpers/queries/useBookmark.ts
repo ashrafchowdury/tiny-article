@@ -15,7 +15,7 @@ export const useFetchBookmarks = ({ userId }: UserId) => {
     queryFn: async () => {
       const res = await axios.get(`api/${userId}/bookmarks`);
 
-      if (res.statusText !== "OK") return;
+      if (res.status >= 400) return;
 
       const validateData = PostsSchema.safeParse(res.data);
 
@@ -42,7 +42,7 @@ export const useUpdateBookmark = ({ userId }: UserId) => {
           "Content-Type": "application/json",
         },
       });
-      if (res.statusText !== "OK") return null;
+      if (res.status >= 400) return;
 
       return data;
     },

@@ -13,7 +13,7 @@ export const useTotalUsage = ({ userId }: UserId) => {
     queryFn: async () => {
       const res = await axios.get(`api/${userId}/total-usage`);
 
-      if (res.statusText !== "OK") return;
+      if (res.status >= 400) return;
 
       return { usage: res.data, reached: res.data >= MAX_USAGE_LIMIT };
     },

@@ -92,7 +92,11 @@ const Sidebar = ({ className }: { className?: string }) => {
         </p>
         <div className="w-full">
           {paths.resource.map((item) => (
-            <Link href={item.url} key={item.title}>
+            <Link
+              href={item.url}
+              key={item.title}
+              target={item.url.includes("https") ? "_blank" : ""}
+            >
               <button className="flex items-center py-3 px-3 md:px-6 w-full hover:bg-input duration-200 text-sm font-medium my-1">
                 <item.icon className="w-4 h-4 mr-3" /> {item.title}
               </button>

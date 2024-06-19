@@ -13,7 +13,7 @@ export const useFetchHistory = ({ userId }: UserId) => {
     queryFn: async () => {
       const res = await axios.get(`api/${userId}/history`);
 
-      if (res.statusText !== "OK") return;
+      if (res.status >= 400) return;
 
       const validateData = HistorySchema.safeParse(res.data);
 
@@ -45,7 +45,7 @@ export const useSaveHistory = ({ userId }: UserId) => {
         }
       );
 
-      if (res.statusText !== "OK") return;
+      if (res.status >= 400) return;
 
       return res.data;
     },

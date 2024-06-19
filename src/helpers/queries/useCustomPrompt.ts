@@ -15,7 +15,7 @@ export const useFetchCustomPrompt = ({ userId }: UserId) => {
     queryFn: async () => {
       const res = await axios.get(`api/${userId}/custom-prompt`);
 
-      if (res.statusText !== "OK") return;
+      if (res.status >= 400) return;
 
       const validateData = CustomPromptSchema.safeParse(res.data);
 
@@ -23,7 +23,7 @@ export const useFetchCustomPrompt = ({ userId }: UserId) => {
         throw new Error(validateData.error.message);
         return;
       }
-
+      console.log("validateData.data", validateData.data);
       return validateData.data;
     },
     refetchOnWindowFocus: false,
@@ -43,7 +43,7 @@ export const useUpdateCustomPrompt = ({ userId }: UserId) => {
           "Content-Type": "application/json",
         },
       });
-      if (res.statusText !== "OK") return;
+      if (res.status >= 400) return;
 
       return res.data;
     },

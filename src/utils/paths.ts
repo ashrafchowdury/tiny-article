@@ -37,7 +37,7 @@ const paths = {
       title: "Resources",
     },
     {
-      url: "/https://github.com/ashrafchowdury/tiny-article",
+      url: "https://github.com/ashrafchowdury/tiny-article",
       icon: LifeBuoy,
       title: "Support",
     },
